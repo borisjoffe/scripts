@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# TODO - create backups for each "group" of files in g/backup
+#	e.g. backup-7d for stuff to backup every 7 days, etc
+
+bstr="Done backing up"
+backuploc="~/Dropbox"
+#backuploc="/media/46F0-8786_"
+
+echo "Backing up important files to Dropbox"
+
+cp ~/fitness/sl5x5.txt ~/Dropbox/
+echo "$bstr sl5x5.txt"
+
+cp ~/Desktop/todo.txt ~/Dropbox/
+echo "$bstr Desktop/todo.txt"
+#cp ~/Desktop/todo.txt ~/Dropbox/
