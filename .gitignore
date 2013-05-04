@@ -1,0 +1,11 @@
+# Executables / Compiled
+*.pyc
+
+# Archives
+*.zip
+*.7z
+*.tar
+
+# Backups
+*.*~
+*.swp

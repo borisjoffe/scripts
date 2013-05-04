@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Run a makefile (make all) every user-specified amount of seconds
+#	(default is 2.5)
+# Saves a bunch of time instead of typing the same thing over and over
+
+if [ -z "$1" ]; then
+	sleeptime=2.5
+else
+	sleeptime=$1
+fi
+
+echo $sleeptime
+
+# make all every $sleeptime seconds
+while true; do sleep $sleeptime; make all > /dev/null; done
