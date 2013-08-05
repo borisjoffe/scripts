@@ -1,2 +1,2 @@
 #!/bin/bash
-nohup $@ 2>&1 &
+nohup $@ &1>/dev/null &
