@@ -1,6 +1,8 @@
 #!/bin/bash
 
+if [ $2 ]; then
+	ls -lth $1 |head -$2
+else
+	ls -lth $1 |head -5
+fi
 
-# TODO - add how many files you want to see?
-
-ls -lth $1 |head -5
