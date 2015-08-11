@@ -3,26 +3,20 @@
 # Simple stats script
 
 SLEEPTIME=$1
-
 [ -z $1 ] && SLEEPTIME=10
 
 while true; do
+	LOAD=`uptime`
 	CPU=`top -n1 |head -6 | tail -n +2 | head -n -2`
-	echo ""
-
 	MEM=`free -h`
-	echo ""
-
 	BATT=`acpi -b`
-	echo ""
-
 	TIME=`date`
 
 	# clear right before writing new data to stdout
 	# to avoid very noticeable flicker while stats are being generated
 	clear
 
-	echo -e "$CPU\n\n$MEM\n\n$BATT\n\n$TIME"
+	echo -e "$LOAD\n\n$CPU\n\n$MEM\n\n$BATT\n\n$TIME"
 
 	sleep $SLEEPTIME
 done
