@@ -9,3 +9,6 @@
 # Backups
 *.*~
 *.swp
+
+# ISO
+ISO*
