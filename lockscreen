@@ -1,0 +1,1 @@
+xautolock -detectsleep -locker slock -locknow; sleep 4 && systemctl suspend
