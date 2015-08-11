@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+[ -z $1 ] && echo "Must supply at least one argument to connect." && exit
+
+iw dev wlan0 connect $@
