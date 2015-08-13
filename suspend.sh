@@ -1,2 +1,3 @@
 #!/bin/bash
-xautolock -detectsleep -locker slock -locknow; sleep 4 && sudo systemctl suspend
+sudo echo "Suspending..." # to ask for sudo password immediately
+xautolock -detectsleep -locker slock -locknow; sleep 2 && sudo systemctl suspend
