@@ -1,5 +1,5 @@
 #!/bin/bash
 
-[ -z $1 ] && echo "Must supply at least one argument to connect." && exit
+[ -z $1 ] && echo "Must supply at least one argument (the SSID) to connect." && exit
 
 sudo iw dev wlan0 connect -w $@

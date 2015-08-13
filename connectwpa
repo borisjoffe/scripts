@@ -1,0 +1,6 @@
+#!/usr/bin/zsh
+
+[ $# -lt 2 ] && echo "Must supply SSID and wpa passphrase to connect." && exit
+
+# =(...) is a hack in zsh to get it work since <(...) doesn't work
+sudo wpa_supplicant -D wext -i wlan0 -B -c =(wpa_passphrase $1 $2)
