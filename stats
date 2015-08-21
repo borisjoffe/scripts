@@ -10,7 +10,7 @@ while true; do
 	CPU=`top -n1 |head -6 | tail -n +2 | head -n -2`
 	MEM=`free -h`
 	BATT=`acpi -b`
-	TIME=`date`
+	TIME="`date` (update interval: $SLEEPTIME)"
 
 	# clear right before writing new data to stdout
 	# to avoid very noticeable flicker while stats are being generated
