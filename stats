@@ -7,8 +7,11 @@ SLEEPTIME=$1
 
 while true; do
 	LOAD=`uptime`
-	CPU=`top -n1 |head -6 | tail -n +2 | head -n -2`
-	MEM=`free -h`
+	#CPU=`top -n1 | head -6 | tail -n +2 | head -2`
+	#MEM=`free -h`
+
+	STATS=`dstat -cmdnl 1 0`
+
 	BATT=`acpi -b`
 	TIME="`date` (update interval: $SLEEPTIME)"
 
@@ -16,7 +19,9 @@ while true; do
 	# to avoid very noticeable flicker while stats are being generated
 	clear
 
-	echo -e "$LOAD\n\n$CPU\n\n$MEM\n\n$BATT\n\n$TIME"
+	#echo -e "$LOAD\n\n$CPU\n\n$MEM\n\n$BATT\n\n$TIME"
+	#echo -e $STATS
+	echo -e "$LOAD\n\n$STATS\n\n$BATT\n\n$TIME"
 
 	sleep $SLEEPTIME
 done
