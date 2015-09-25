@@ -1,5 +1,6 @@
 # Executables / Compiled
 *.pyc
+*.exe
 
 # Archives
 *.zip
@@ -9,6 +10,8 @@
 # Backups
 *.*~
 *.swp
+*.bak
 
 # ISO
 ISO*
+
