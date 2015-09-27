@@ -1,8 +1,10 @@
 #!/bin/bash
 
-if [ $2 ]; then
-	ls -lth $1 |head -$2
-else
-	ls -lth $1 |head -5
+if [[ $# > 2 ]]; then
+	LS_ARGS=$1
+	shift
 fi
 
+NUM_FILES=${2:-5}
+
+ls -lth $LS_ARGS $1 |head -$NUM_FILES
