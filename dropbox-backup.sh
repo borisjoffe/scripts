@@ -8,13 +8,14 @@ SLEEPTIME=30
 dropbox-cli start
 backup-important > /dev/null
 sleep 15
+echo "backing up and syncing"
 
 until [[ `dropbox-cli status` == "Up to date" ]]; do
-	echo "dropbox not synced....backing up and syncing"
+	echo -n "*"
 	sleep $SLEEPTIME;
 	backup-important > /dev/null
 done
 
-echo -e "\ndropbox done syncing. stopping dropbox..."
+echo -e "\n\ndropbox done syncing. stopping dropbox..."
 dropbox-cli stop
 
