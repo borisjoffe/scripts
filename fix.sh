@@ -9,12 +9,12 @@ else
 	[[ $(pgrep xautolock) ]] && echo "[FIXED] xautolock started" || "[FAIL] xautolock failed to start"
 fi
 
-if [[ $(localectl status | grep dvorak) ]] ; then
+if [[ $(setxkbmap -query | grep dvorak) ]] ; then
 	echo "[OK] Keyboard is set to: dvorak"
 else
 	echo -e "\n[Error] The keyboard layout is not dvorak"
 	setxkbmap dvovark
-	[[ $(localectl status | grep dvorak) ]] && echo "[FIXED] Set keyboard layout to: dvorak" || "[FAIL] Could not set keyboard to: dvorak"
+	[[ $(setxkbmap -query | grep dvorak) ]] && echo "[FIXED] Set keyboard layout to: dvorak" || "[FAIL] Could not set keyboard to: dvorak"
 fi
 
 if [[ $(xmodmap -pke | grep " 66" | grep 8) ]] ; then
