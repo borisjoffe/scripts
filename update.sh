@@ -10,7 +10,8 @@ run () {
 	notify "Finished: $@"
 }
 
+run dropbox-backup.sh &
 run sudo pacmatic -Syu
 run sudo pacaur -Syu
-run dropbox-backup.sh
 run sudo npm update -g
+run sudo updatedb
