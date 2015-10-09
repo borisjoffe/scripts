@@ -13,7 +13,7 @@ if [[ $(setxkbmap -query | grep dvorak) ]] ; then
 	echo "[OK] Keyboard is set to: dvorak"
 else
 	echo -e "\n[Error] The keyboard layout is not dvorak"
-	setxkbmap dvovark
+	setxkbmap dvorak
 	[[ $(setxkbmap -query | grep dvorak) ]] && echo "[FIXED] Set keyboard layout to: dvorak" || "[FAIL] Could not set keyboard to: dvorak"
 fi
 
