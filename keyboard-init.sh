@@ -1,5 +1,7 @@
 #!/bin/bash
 
-setxkbmap dvorak &
-setxkbmap -option compose:menu
-. $HOME/bin/enable-eight-key.sh &
+setxkbmap -layout dvorak -model inspiron -option compose:menu
+
+# Maps 8 and * to CAPS LOCK while disabling CAPS LOCK
+setxkbmap -option caps:none
+xmodmap -e 'keycode 66=8 asterisk 8 asterisk 8 asterisk'

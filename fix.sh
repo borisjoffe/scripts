@@ -13,7 +13,7 @@ if [[ $(setxkbmap -query | grep dvorak) ]] ; then
 	echo "[OK] Keyboard is set to: dvorak"
 else
 	echo -e "\n[Error] The keyboard layout is not dvorak"
-	setxkbmap dvorak
+	keyboard-init.sh
 	[[ $(setxkbmap -query | grep dvorak) ]] && echo "[FIXED] Set keyboard layout to: dvorak" || "[FAIL] Could not set keyboard to: dvorak"
 fi
 
@@ -21,7 +21,7 @@ if [[ $(xmodmap -pke | grep " 66" | grep 8) ]] ; then
 	echo "[OK] Eight key enabled"
 else
 	echo -e "\n[Error] Eight key not enabled. Enabling eight key..."
-	enable-eight-key.sh
+	keyboard-init.sh
 	[[ $(xmodmap -pke | grep " 66" | grep 8) ]] && echo "[FIXED] Enabled eight key" || echo "[FAIL] Could not enable eight key"
 fi
 
