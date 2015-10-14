@@ -12,6 +12,5 @@ run () {
 sudo echo "Starting update..." # to get sudo password prompt before async work starts
 run dropbox-backup.sh &
 run sudo pacmatic -Syu
-run pacaur -Syu
 run sudo npm update -g
 run sudo updatedb
