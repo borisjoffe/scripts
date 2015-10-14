@@ -1,13 +1,12 @@
 #!/bin/bash
 
 notify () {
-	xmessage -center "$@" &
+	notify.sh "$@" &
 }
 
 run () {
 	echo "Starting: $@"
-	eval "$@"
-	notify "Finished: $@"
+	eval "$@" && notify "Finished: $@" || notify "Error: $@"
 }
 
 run dropbox-backup.sh &
