@@ -1,3 +1,3 @@
-#!bin/bash
+#!/bin/bash
 
-xmessage -center "$@"
+[[ $DISPLAY ]] && xmessage -center "$@" || wall "$@"
