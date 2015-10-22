@@ -13,4 +13,6 @@ sudo echo "Starting update..." # to get sudo password prompt before async work s
 run dropbox-backup.sh &
 run sudo pacmatic -Syu
 run sudo npm update -g
+run cabal update
+run opam update && opam upgrade
 run sudo updatedb
