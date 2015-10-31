@@ -1,3 +1,8 @@
 #!/bin/bash
 
-[[ $DISPLAY ]] && xmessage -center "$@" || wall "$@"
+if [[ $DISPLAY ]]; then
+	# xmessage -center "$@"
+	zenity --notification --text="$@"
+else
+	wall "$@"
+fi
