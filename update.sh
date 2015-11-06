@@ -15,6 +15,7 @@ run sudo pacmatic -Syu
 run sudo npm update -g
 
 if [[ $1 == "all" ]]; then
+	run pushd /data/src; git-update-subdirs.sh; popd;
 	run cabal update
 	run opam update && opam upgrade
 fi
