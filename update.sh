@@ -10,14 +10,15 @@ run () {
 }
 
 sudo echo "Starting update..." # to get sudo password prompt before async work starts
-run dropbox-backup.sh &
-run pacmatic -Syu
-run sudo npm update -g
+run "dropbox-backup.sh" &
+run "pacmatic -Syu"
+run "sudo npm update -g"
+exit
 
 if [[ $1 == "all" ]]; then
-	run pushd /data/src; git-update-subdirs.sh; popd;
-	run cabal update
-	run opam update && opam upgrade
+	run "pushd /data/src; git-update-subdirs.sh; popd;"
+	run "cabal update"
+	run "opam update && opam upgrade"
 fi
 
 run sudo updatedb
