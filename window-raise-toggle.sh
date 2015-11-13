@@ -1,6 +1,11 @@
 #!/bin/bash
 
-WINDOW_ID=$(window-id.sh $1)
+if [ $1 -eq 0 ]; then
+	WINDOW_ID=$(window-id-last.sh)
+else
+	WINDOW_ID=$(window-id.sh $1)
+fi
+
 #echo "window id is: "$WINDOW_ID
 #echo "focused window id is: "`xdotool getwindowfocus`
 
