@@ -15,7 +15,7 @@ if [[ `locknow` == 0 ]]; then
 	suspendnow
 else
 	notify.sh "Could not lock screen...will restart xautolock and try again"
-	xautolock-init.sh
+	run xautolock-init.sh
 	sleep 2
 	[[ `locknow` == 0 ]] && suspendnow || notify.sh "Still couldn't lock screen...try to do it manually"
 fi
