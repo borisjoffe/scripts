@@ -1,0 +1,17 @@
+#!/bin/bash
+# Depends: notify.sh, vlc
+
+[[ ($1 == "-h") || ($1 =~ "-help") ]] && echo "Usage: timer [NUM MINUTES] [AUDIO FILE TO PLAY]" && exit
+
+if [ -z "$1" ]; then
+	amt=300 # 5 minutes
+else
+	amt=$(($1*60))
+fi
+
+amtMinutes=$((amt/60))
+echo "Will sound alarm in $amtMinutes minute(s)"
+
+sleep $amt;
+notify.sh "Timer for $amtMinutes min done";
+[[ $2 ]] && vlc "$2" 2> /dev/null &
