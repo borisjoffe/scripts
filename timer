@@ -10,7 +10,8 @@ else
 fi
 
 amtMinutes=$((amt/60))
-echo "Will sound alarm in $amtMinutes minute(s)"
+echo "The time is now: $(date +%H:%M)"
+echo -e "Timer will be done in $amtMinutes minute(s)\n\tat" $(date +%H:%M -d "$amtMinutes minutes") "("$(date +%F)")"
 
 sleep $amt;
 notify.sh "Timer for $amtMinutes min done";
