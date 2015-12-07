@@ -1,4 +1,5 @@
 #!/bin/bash
+# Deps: git-current-branch.sh
 
 LOGFILE=git-update-subdir.log
 CWD=`pwd`
@@ -13,20 +14,26 @@ for directory in */; do
 	cd $directory
 
 	if [ -d .git ]; then
-		log "Starting to update $directory ... "
-		BRANCH=`git rev-parse --symbolic-full-name --abbrev-ref HEAD`
+		log "Updating $directory ... "
 
-		OUTPUT=`git pull`
-		STATUS=$?
-		if [[ ! $STATUS ]]; then
-			log "git pull ERROR:\n$OUTPUT"
-			git fetch --tags
-			log "FETCH ONLY"
-		fi
+		git fetch --tags
+		currentBranch=`git-current-branch.sh`
 
-		log "[X] Done updating $directory"
+		for branch in $(git branch | cut -c3-); do
+			log "Updating $directory$branch ... "
+			git checkout $branch
+			OUTPUT=`git pull --ff-only`
+			STATUS=$?
+			if [[ ! $STATUS ]]; then
+				log "[ERROR from git pull]:\n$OUTPUT"
+				log "FETCH ONLY"
+			fi
+		done
+		git checkout $currentBranch
+
+		log "[DONE] Updated $directory"
 	else
-		log "Not a git repo: $directory"
+		log "[SKIPPING] Not a git repo: $directory"
 	fi
 
 	cd ../
