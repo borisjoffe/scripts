@@ -1,2 +1,2 @@
 #!/bin/sh
-git symbolic-ref HEAD | cut -d'/' -f3
+git rev-parse --abbrev-ref HEAD
