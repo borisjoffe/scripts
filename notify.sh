@@ -1,5 +1,7 @@
 #!/bin/bash
 
+TIMEOUT=${TIMEOUT:-5000}
+
 if [[ $DISPLAY ]]; then
 	# xmessage -center "$@"
 	# zenity --notification --text="$@"
@@ -7,9 +9,9 @@ if [[ $DISPLAY ]]; then
 	if [[ $# > 1 ]]; then
 		header=$1
 		shift
-		notify-send -t 5000 "$header" "$@"
+		notify-send -t $TIMEOUT "$header" "$@"
 	else
-		notify-send -t 5000 "$@"
+		notify-send -t $TIMEOUT "$@"
 	fi
 
 else
