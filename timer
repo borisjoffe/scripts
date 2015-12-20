@@ -1,7 +1,7 @@
 #!/bin/bash
 # Depends: notify.sh, vlc, usage.sh
 
-usage.sh "timer [NUM MINUTES] [AUDIO FILE TO PLAY]" $@ && exit
+usage.sh "[AUDIO=/path/to/audiofile] timer [NUM MINUTES] [MESSAGE TO SHOW]" $@ && exit
 
 if [ -z "$1" ]; then
 	amt=300 # 5 minutes
@@ -9,10 +9,12 @@ else
 	amt=$(($1*60))
 fi
 
+msg=$2
+
 amtMinutes=$((amt/60))
 echo "The time is now: $(date +%H:%M)"
 echo -e "Timer will be done in $amtMinutes minute(s)\n\tat" $(date +%H:%M -d "$amtMinutes minutes") "("$(date +%F)")"
 
 sleep $amt;
-notify.sh "Timer for $amtMinutes min done";
-[[ $2 ]] && vlc "$2" 2> /dev/null &
+notify.sh "Timer for $amtMinutes min done" "$msg";
+[[ $AUDIO ]] && vlc "$AUDIO" 2> /dev/null &
