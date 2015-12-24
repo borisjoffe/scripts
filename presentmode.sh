@@ -4,12 +4,12 @@ help='presentmode.sh [on|off]'
 usage.sh $help $@ && exit
 
 case $1 in
-'on')
+on)
 	redshift -x
 	pkill redshift
 	pkill workrave
 	;;
-'off')
+off)
 	nohup redshift -o &
 	nohup workrave &
 	;;
