@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Hack to convert GitHub-Flavored Markdown to HTML without
+# using GitHub's API (works offline)
+# Deps: ~/.gfm/{head.html,tail.html,subs.dat}, marked(npm)
+
+CONFDIR="~/.gfm"
+
+# TODO: mak ethis script process multiple args to avoid manual for loop
+
+if [ -z $1 ]; then
+	# no file specified - run on all markdown files
+	for f in *.md; do
+		gfm "$f"
+	done
+	exit
+else
+	gfmfile="$1"
+fi
+
+#echo $gfmfile && exit
+[ ! -f $gfmfile ] && echo "File not found: $gfmfile" && exit
+htmlfile=$(echo $gfmfile | sed 's/\..*$/\.html/')
+
+cat $CONFDIR/head.html > $htmlfile
+html=$(marked $gfmfile)
+
+# http://stackoverflow.com/questions/10929453/bash-scripting-read-file-line-by-line
+while IFS='' read -r line || [[ -n $line ]]; do
+	echo "sed: $line"
+	html="`echo "$html" | sed 's,'"$line"',g'`"
+done < $CONFDIR/subs.dat
+
+echo $html >> $htmlfile
+cat $CONFDIR/tail.html >> $htmlfile
+
+echo "Created $htmlfile"
