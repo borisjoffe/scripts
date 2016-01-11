@@ -1,0 +1,5 @@
+#!/bin/bash
+
+place=$(echo "$1" | tr ' ' '+')
+
+curl "https://maps.googleapis.com/maps/api/geocode/json?address="$place"&key=$GOOGLE_SERVER_KEY"

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+curl "https://api.forecast.io/forecast/"$FORECASTIO_KEY"/47.6600,-122.3000/"
