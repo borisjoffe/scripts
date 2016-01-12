@@ -1,0 +1,26 @@
+#!/usr/bin/fish
+
+# Poor man's bash -> fish converter
+# Deps: perl
+
+set bashfile $argv[1]
+
+# HACK due to: https://github.com/fish-shell/fish-shell/issues/159
+set tmpfile $bashfile.tmp
+set fishfile $bashfile.fish
+
+cp $bashfile $tmpfile
+
+# Don't actually create aliases for now
+function aliass;
+	echo 'setting alias: '$argv[1];
+end;
+
+# Remove if statements
+perl -0777 -pe 's/if .*fi//gs' -i $tmpfile
+
+perl -0777 -pe 's/alias /aliass /gs' -i $tmpfile
+
+cp $tmpfile $fishfile
+rm $tmpfile
+echo $fishfile
