@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# Outputs location data for a given place (optionally just latitude/longitude)
+# Requires: $GOOGLE_SERVER_KEY API Key to be defined
+# Deps: jq, usage.sh
+
+usage.sh 'geocode [-latlong] "some location"' $@ && exit
+
+if [[ "$1" =~ "latlong" ]]; then
+	LATLONG=true
+	shift
+fi
+
 place=$(echo "$1" | tr ' ' '+')
 
-curl "https://maps.googleapis.com/maps/api/geocode/json?address="$place"&key=$GOOGLE_SERVER_KEY"
+json=`curl -s "https://maps.googleapis.com/maps/api/geocode/json?address="$place"&key=$GOOGLE_SERVER_KEY"`
+
+[ $LATLONG ] && echo $json | jq '.results[].geometry.location | flatten' || echo $json
