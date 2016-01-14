@@ -9,18 +9,24 @@ set bashfile $argv[1]
 set tmpfile $bashfile.tmp
 set fishfile $bashfile.fish
 
-cp $bashfile $tmpfile
+command cp $bashfile $tmpfile
+
+# Remove if statements
+perl -0777 -pe 's/if .*fi//gs' -i $tmpfile
+
+# Remove functions
+perl -0777 -pe 's/function .*}//gs' -i $tmpfile
+
+# Replace &&, ||
+perl -0777 -pe 's/ &&/; and/gs' -i $tmpfile
+perl -0777 -pe 's/ \|\|/; or/gs' -i $tmpfile
 
 # Don't actually create aliases for now
 function aliass;
 	echo 'setting alias: '$argv[1];
 end;
-
-# Remove if statements
-perl -0777 -pe 's/if .*fi//gs' -i $tmpfile
-
 perl -0777 -pe 's/alias /aliass /gs' -i $tmpfile
 
-cp $tmpfile $fishfile
-rm $tmpfile
+command cp $tmpfile $fishfile
+command rm $tmpfile
 echo $fishfile
