@@ -6,6 +6,9 @@
 
 usage.sh 'geocode [-latlong] "some location"' $@ && exit
 
+SERVER_KEY_HELP_URL='https://developers.google.com/api-client-library/php/guide/aaa_apikeys'
+[ -z $GOOGLE_SERVER_KEY ] && echo -e '$GOOGLE_SERVER_KEY needs to be created and set.\n\nSee '$SERVER_KEY_HELP_URL' for instructions on how to create a server key.\n\nThen set it in your shell configuration file.' && exit
+
 if [[ "$1" =~ "latlong" ]]; then
 	LATLONG=true
 	shift
