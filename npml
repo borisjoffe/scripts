@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# npm_lazy wrapper (that automatically starts and shutsdown server)
+# Deps: npm_lazy
+# Requires: ~/.npm_lazy.config.js
+
+if [[ -z `pgrep -f npm_lazy` ]]; then
+	echo "Starting npm_lazy server..."
+	nohup npm_lazy --config ~/.npm_lazy.config.js | tee /dev/null  &
+	sleep 2
+else
+	echo "Using existing npm_lazy server..."
+fi
+
+config=~/.npm_lazy.config.js
+[ -f $config ] || echo "Could not find config file: $config" || exit
+
+local_registry=`grep externalUrl $config | awk '{print $2}' | tr -d "',"`
+
+echo "Reading from $local_registry"
+
+echo "Running npm command with local registry"
+npm --registry $local_registry $@
+
+{
+	#notify.sh "Sleeping 30m"
+	sleep $((60*30)) # shutdown after 30m
+	#notify.sh "Killing npm_lazy server..."
+	pgrep -f npm || pkill npm_lazy
+} &
