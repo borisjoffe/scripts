@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Redirects output of command with arguments to last argument
+# Example:
+# 	`of echo -e "hello\n" a.txt` is equivalent to `echo -e "hello\n" > a.txt`
+
+# http://stackoverflow.com/questions/1853946/getting-the-last-argument-passed-to-a-shell-script
+last=`echo "${@: -1}"`
+
+# http://stackoverflow.com/questions/20398499/remove-last-argument-from-argument-list-of-shell-script-bash
+array=( "$@" )
+unset "array[${#array[@]}-1]"
+allButLast="${array[@]}"
+
+#echo "Last: $last"
+#echo "Everything else: $allButLast"
+#exit
+
+eval $allButLast > $last
