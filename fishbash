@@ -11,11 +11,14 @@ set fishfile $bashfile.fish
 
 command cp $bashfile $tmpfile
 
+# Remove comments
+perl -pe 's/#.*$//s' -i $tmpfile
+
 # Remove if statements
-perl -0777 -pe 's/if .*fi//gs' -i $tmpfile
+perl -0777 -pe 's/\s?if\s+.*\s+fi\s?//gs' -i $tmpfile
 
 # Remove functions
-perl -0777 -pe 's/function .*}//gs' -i $tmpfile
+perl -0777 -pe 's/\s?function\s+.*\s+}\s?//gs' -i $tmpfile
 
 # Replace &&, ||
 perl -0777 -pe 's/ &&/; and/gs' -i $tmpfile
