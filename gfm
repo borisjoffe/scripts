@@ -10,7 +10,7 @@ if [[ $# -lt 1 ]]; then
 	# no file specified - run on all markdown files
 	files=*.md
 else
-	files=$@
+	files="$@"
 fi
 
 
