@@ -3,6 +3,10 @@
 # Poor man's bash -> fish converter
 # Deps: perl
 
+## TODO:
+# - alias -> abbr
+# - function() { ... } -> function <name>; bass <function-body> $argv; end
+
 set bashfile $argv[1]
 
 # HACK due to: https://github.com/fish-shell/fish-shell/issues/159
