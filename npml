@@ -23,13 +23,13 @@ npm --registry $local_registry $@
 
 ## Make sure that server is shut down later and that only one background process
 ## to shut it down is running at a time
-pid_file=/tmp/npm-lazy-kill-later
+pid_file=$HOME/.tmp/npm-lazy-kill-later
 
 # Kill old background process if any and remove file
-if [ -f $pid_file ]; then
-	old_pid=`cat $pid_file`
+if [ -f "$pid_file" ]; then
+	old_pid=`cat "$pid_file"`
 	pgrep $old_pid && kill $old_pid
-	command rm $pid_file
+	command rm "$pid_file"
 fi
 
 # Background process to shut down server later
@@ -46,4 +46,6 @@ fi
 
 # Keep track of sole background process
 echo $! > $pid_file
-chmod 666 $pid_file  # make sure anyone can delete it
+
+# If planning to run npml as root, uncomment this line
+# chown boris $pid_file
