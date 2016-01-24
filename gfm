@@ -24,6 +24,10 @@ for f in $files; do
 	htmlfile=$(echo $gfmfile | sed 's/\..*$/\.html/')
 	cat "$CONFDIR/head.html" > $htmlfile
 
+	# Replace title
+	title=${gfmfile%.md}
+	sed -i 's/<title><\/title>/<title>'$title'<\/title>/' $htmlfile
+
 	html=$(marked $gfmfile)
 
 	# http://stackoverflow.com/questions/10929453/bash-scripting-read-file-line-by-line
