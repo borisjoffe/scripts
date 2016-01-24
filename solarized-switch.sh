@@ -14,7 +14,7 @@ else
 	echo "SOLARIZED is dark"
 fi
 
-fish -c "source $HOME/bin/solarized-switch.fish"
+#fish -c "source $HOME/bin/solarized-switch.fish"
 
 if [[ $SOLARIZED == 1 ]]; then
 	xrdb -override "$HOME/.Xresources.solarized"
