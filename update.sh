@@ -12,7 +12,7 @@ run () {
 sudo echo "Starting update..." # to get sudo password prompt before async work starts
 run "dropbox-backup.sh" &
 run "sudo pacmatic -Syu"
-run "sudo npm update -g"
+run "npml update -g"
 
 if [[ $1 == "all" ]]; then
 	run "pushd /data/src; git-update-subdirs.sh; popd;"
