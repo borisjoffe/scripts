@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo "[WARN]: $1" 1>&2

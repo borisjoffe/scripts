@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo "[ERR]: $1" 1>&2
