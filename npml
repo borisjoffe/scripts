@@ -53,9 +53,9 @@ case $cmd in
 		npm_lazy_pid=`pgrep -f npm_lazy || :`
 		if [ -n "$npm_lazy_pid" ]; then
 			kill $npm_lazy_pid
-			echo "Stopped"
+			echo "npm_lazy server was stopped"
 		else
-			echo "Already stopped"
+			echo "npm_lazy server was already stopped"
 		fi
 
 		exit
@@ -93,10 +93,11 @@ if [ -f "$pid_file" ]; then
 	command rm "$pid_file"
 fi
 
+SLEEPTIME_MIN=30
 # Background process to shut down server later
 {
 	#notify.sh "Sleeping 30m"
-	sleep $((60*30)) # shutdown after 30m
+	sleep $((60*$SLEEPTIME_MIN)) # shutdown after 30m
 	#notify.sh "Killing npm_lazy server..."
 	npml stop
 	[ -f "$pid_file" ] && command rm $pid_file
