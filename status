@@ -1,6 +1,10 @@
 #!/bin/bash
 
 # Returns status of command that you want to run
+# Deps: usage.sh
+
+USAGE="status 'your command and args here'"
+usage.sh "$USAGE" $@ && exit
 
 eval "$@" > /dev/null
 echo $?
