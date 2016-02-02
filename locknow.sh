@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -u
+
 xautolock -locknow
 if [[ $? != 0 ]]; then
 	notify.sh "Starting xautolock"

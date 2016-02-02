@@ -1,17 +1,18 @@
 #!/bin/bash
 # Deps: git-current-branch.sh, usage.sh
 
+set -u
 usage.sh "git-update-branches.sh [LOGFILE]" $@ && exit
 
-LOGFILE=${1:-git-update-branches.log}
+readonly LOGFILE=${1:-git-update-branches.log}
 
 [ -f $LOGFILE ] && mv $LOGFILE $LOGFILE.bak
 
 log() {
-	echo $@ | tee -a $LOGFILE
+	echo "$@" | tee -a $LOGFILE
 }
 
-directory=$(basename `pwd`)
+readonly directory=$(basename `pwd`)
 
 if [ -d .git ]; then
 	log "Updating $directory ... "

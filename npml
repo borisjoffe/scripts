@@ -4,6 +4,8 @@
 # Deps: npm_lazy
 # Requires: ~/.npm_lazy.config.js
 
+set -u
+
 if [[ -z `pgrep -f npm_lazy` ]]; then
 	echo "Starting npm_lazy server..."
 	nohup npm_lazy --config ~/.npm_lazy.config.js | tee /dev/null  &

@@ -4,11 +4,12 @@
 # using GitHub's API (works offline)
 # Deps: ~/.gfm/{head.html,tail.html,subs.dat}, marked(npm)
 
+set -u
 CONFDIR="$HOME/.gfm"
 
 if [[ $# -lt 1 ]]; then
 	# no file specified - run on all markdown files
-	files=*.md
+	files="*.md"
 else
 	files="$@"
 fi
