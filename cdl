@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# cd and ls
+
+cd $1
+shift
+ls $@
