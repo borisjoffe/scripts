@@ -1,0 +1,21 @@
+#!/bin/bash
+
+USAGE="array-contains valueToLookFor arrayOfElements\nExits with status code 0 if element found or status code 1 if not found."
+usage.sh "$USAGE" $@ && exit
+
+value=$1
+shift
+
+typeset -a arr
+arr=( $@ )
+n=$#
+
+for elm in ${arr[@]}; do
+	#dbg "elm: $elm"
+
+	if [ "$elm" == "${value}" ]; then
+		exit 0
+	fi
+done
+
+exit 1

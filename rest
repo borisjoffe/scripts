@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Note: If calling from bash, must use ${arr[@]} or ${arr[*]} format
+
+shift
+echo $@

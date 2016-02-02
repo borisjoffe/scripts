@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Returns status of command that you want to run
+
+eval "$@" > /dev/null
+echo $?
