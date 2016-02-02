@@ -1,36 +1,95 @@
 #!/bin/bash
 
-# npm_lazy wrapper (that automatically starts and shutsdown server)
-# Deps: npm_lazy
+# npm wrapper that wraps pnpm and npm_lazy
+# - uses pnpm for `npm install` (local)
+# - uses npm_lazy for everything else and automatically starts and shuts down the npm_lazy server
+# Deps: npm_lazy, pnpm, status, array-contains, runsilent
 # Requires: ~/.npm_lazy.config.js
 
-set -u
+set -ueo pipefail
 
-if [[ -z `pgrep -f npm_lazy` ]]; then
-	echo "Starting npm_lazy server..."
-	nohup npm_lazy --config ~/.npm_lazy.config.js | tee /dev/null  &
-	sleep 2
-else
-	echo "Using existing npm_lazy server..."
+cmd=${1:-}
+
+###################################
+# Use pnpm for local installs
+###################################
+cmd_is_install=`status "(( $(expr match $cmd i) ))"`
+cmd_is_local=$(( 1 - $(status array-contains '-g' $@) ))
+
+if (( $cmd_is_install + $cmd_is_local == 0 )); then
+	# TODO: fix later
+	# don't use npm_lazy registry due to the following error:
+	# error [500] Error:  [Error: [done] Could not find version]
+	npm=pnpm
+	npm_command="$npm $@"
+
+	echo "Running $npm"
+	$npm_command
+
+	exit
 fi
+
+###################################
+# Use npm_lazy for everything else
+###################################
+
+npm_server="npm_lazy --config $HOME/.npm_lazy.config.js"
+npm_server_silent="runsilent $npm_server"
+
+case $cmd in
+	"start")
+		# Start npm_lazy if necessary
+		if [[ -z `pgrep -f npm_lazy` ]]; then
+			echo "Starting npm_lazy server..."
+			$npm_server_silent
+			sleep 2
+		else
+			echo "npm_lazy server already running"
+		fi
+
+		exit
+		;;
+	"stop")
+		npm_lazy_pid=`pgrep -f npm_lazy || :`
+		if [ -n "$npm_lazy_pid" ]; then
+			kill $npm_lazy_pid
+			echo "Stopped"
+		else
+			echo "Already stopped"
+		fi
+
+		exit
+		;;
+	*)
+		npml start
+		;;
+esac
+
 
 config=~/.npm_lazy.config.js
 [ -f $config ] || echo "Could not find config file: $config" || exit
 
 local_registry=`grep externalUrl $config | awk '{print $2}' | tr -d "',"`
 
-echo "Running npm command with local registry: $local_registry"
-npm --registry $local_registry $@
+npm=npm
+npm_command="$npm --registry $local_registry $@"
 
+echo "Running $npm command with local registry: $local_registry"
+$npm_command
+
+###################################
+# Cleanup npm_lazy server
+###################################
 
 ## Make sure that server is shut down later and that only one background process
 ## to shut it down is running at a time
+
 pid_file=$HOME/.tmp/npm-lazy-kill-later
 
 # Kill old background process if any and remove file
 if [ -f "$pid_file" ]; then
 	old_pid=`cat "$pid_file"`
-	pgrep $old_pid && kill $old_pid
+	pgrep $old_pid && kill $old_pid || :
 	command rm "$pid_file"
 fi
 
@@ -39,7 +98,7 @@ fi
 	#notify.sh "Sleeping 30m"
 	sleep $((60*30)) # shutdown after 30m
 	#notify.sh "Killing npm_lazy server..."
-	pgrep npm || pkill npm_lazy
+	npml stop
 	[ -f "$pid_file" ] && command rm $pid_file
 } &
 
