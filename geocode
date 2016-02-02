@@ -4,13 +4,14 @@
 # Requires: $GOOGLE_SERVER_KEY API Key to be defined
 # Deps: jq, usage.sh
 
+set -u
 usage.sh 'geocode [-latlong] "some location"' $@ && exit
 
 SERVER_KEY_HELP_URL='https://developers.google.com/api-client-library/php/guide/aaa_apikeys'
-[ -z $GOOGLE_SERVER_KEY ] && echo -e '$GOOGLE_SERVER_KEY needs to be created and set.\n\nSee '$SERVER_KEY_HELP_URL' for instructions on how to create a server key.\n\nThen set it in your shell configuration file.' && exit
+[ -z "$GOOGLE_SERVER_KEY" ] && echo -e '$GOOGLE_SERVER_KEY needs to be created and set.\n\nSee '$SERVER_KEY_HELP_URL' for instructions on how to create a server key.\n\nThen set it in your shell configuration file.' && exit
 
 if [[ "$1" =~ "latlong" ]]; then
-	LATLONG=true
+	latlong=true
 	shift
 fi
 
@@ -18,4 +19,4 @@ place=$(echo "$1" | tr ' ' '+')
 
 json=`curl -s "https://maps.googleapis.com/maps/api/geocode/json?address="$place"&key=$GOOGLE_SERVER_KEY"`
 
-[ $LATLONG ] && echo $json | jq '.results[].geometry.location | flatten' || echo $json
+[ $latlong ] && echo $json | jq '.results[].geometry.location | flatten' || echo $json
