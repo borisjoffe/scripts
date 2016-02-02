@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Check that passed in requirements are met. Exits with status code 1 if they aren't
+# Set DO_NOT_CHECK_REQUIRES=true to avoid checking commands for performance reasons (e.g. for long lists of dependencies that you don't want to check at runtime or if a command calls requires and runs in a tight loop)
+
+[ "$DO_NOT_CHECK_REQUIRES" ] && exit 0
+
+set -ueo pipefail
+
+usage.sh "requires [one or more programs]\ne.g. requires cat tar some_other_program" $@ && exit
+
+exit_code=0
+
+for cmd in "$@"; do
+	if [[ -z $(command -v $cmd) ]]; then
+		echo "requires: $cmd"
+		exit_code=1
+	fi
+done
+
+exit $exit_code
