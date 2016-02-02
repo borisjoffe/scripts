@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Return all arguments except the last one
+# Modified from: http://stackoverflow.com/questions/20398499/remove-last-argument-from-argument-list-of-shell-script-bash
+
+if [[ -z "$@" ]]; then
+	echo ""
+	exit
+fi
+
+array=( "$@" )
+unset "array[${#array[@]}-1]"
+echo ${array[@]}

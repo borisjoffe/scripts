@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# http://stackoverflow.com/questions/1853946/getting-the-last-argument-passed-to-a-shell-script
+
+echo "${@: -1}"
