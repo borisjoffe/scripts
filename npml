@@ -3,10 +3,11 @@
 # npm wrapper that wraps pnpm and npm_lazy
 # - uses pnpm for `npm install` (local)
 # - uses npm_lazy for everything else and automatically starts and shuts down the npm_lazy server
-# Deps: npm_lazy, pnpm, status, array-contains, runsilent
-# Requires: ~/.npm_lazy.config.js
 
 set -ueo pipefail
+
+requires npm_lazy pnpm status array-contains runsilent || exit
+requires-file ~/.npm_lazy.config.js || exit
 
 cmd=${1:-}
 
@@ -22,6 +23,9 @@ if (( $cmd_is_install + $cmd_is_local == 0 )); then
 	# error [500] Error:  [Error: [done] Could not find version]
 	npm=pnpm
 	npm_command="$npm $@"
+
+	# Guard against non-node directories because pnpm fails with weird error
+	[ ! -f package.json ] && echo 'No "package.json". Exiting.' && exit
 
 	echo "Running $npm"
 	$npm_command
