@@ -8,4 +8,4 @@ set -u
 
 usageText=$1
 shift
-need-help.sh $@ && echo "USAGE: $usageText" && exit
+need-help.sh $@ && echo -e "USAGE: $usageText" && exit
