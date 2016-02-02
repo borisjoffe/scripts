@@ -40,7 +40,7 @@ fi
 	sleep $((60*30)) # shutdown after 30m
 	#notify.sh "Killing npm_lazy server..."
 	pgrep npm || pkill npm_lazy
-	command rm $pid_file
+	[ -f "$pid_file" ] && command rm $pid_file
 } &
 
 #echo "This pid: $$"
