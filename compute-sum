@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Compute sum of input lines
+# Adapted from: http://stackoverflow.com/questions/450799/shell-command-to-sum-integers-one-per-line
+
+set -ueo pipefail
+
+# remove blank lines, join with a '+', and feed to calculator
+grep -v '^$' | paste -sd+ - | bc
