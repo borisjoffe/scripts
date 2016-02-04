@@ -1,3 +1,5 @@
 #!/bin/bash
 
-awk '{print $'$1'}'
+column_number=$1
+shift
+awk $@ '{print $'$column_number'}'
