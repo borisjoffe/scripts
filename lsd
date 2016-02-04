@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Lists directories directly in specified path (or current directory if not specified)
+
+set -ueo pipefail
+
+dir=${1:-}
+
+if [ -z "$dir" ]; then
+	command ls -d */
+else
+	command ls -d "$dir/*/"
+fi
