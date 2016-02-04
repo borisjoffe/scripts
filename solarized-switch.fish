@@ -1,3 +1,3 @@
 #!/usr/bin/fish
 
-set -g SOLARIZED $argv[1]
+setenv SOLARIZED $argv[1]
