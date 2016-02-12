@@ -8,6 +8,10 @@ SLEEPTIME=$1
 while true; do
 	LOAD=`uptime`
 	#CPU=`top -n1 | head -6 | tail -n +2 | head -2`
+
+	# Adapted from: http://superuser.com/questions/609949/what-are-the-methods-available-to-get-the-cpu-usage-in-linux-command-line
+	#CPU=`top -bn3 -d0.5  | grep '^%Cpu' | tail -n2`
+
 	#MEM=`free -h`
 
 	STATS=`dstat -cmdnl 1 0`
