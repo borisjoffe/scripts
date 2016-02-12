@@ -16,20 +16,19 @@ fi
 
 
 for f in $files; do
-	gfmfile="$1"
-	shift
+	gfmfile="$f"
 
 	#echo $gfmfile && continue
 	[ ! -f "$gfmfile" ] && echo "File not found: $gfmfile" && continue
 
-	htmlfile=$(echo $gfmfile | sed 's/\..*$/\.html/')
-	cat "$CONFDIR/head.html" > $htmlfile
+	htmlfile=$(echo "$gfmfile" | sed 's/\..*$/\.html/')
+	cat "$CONFDIR/head.html" > "$htmlfile"
 
 	# Replace title
 	title=${gfmfile%.md}
-	sed -i 's/<title><\/title>/<title>'$title'<\/title>/' $htmlfile
+	sed -i 's/<title><\/title>/<title>'"$title"'<\/title>/' "$htmlfile"
 
-	html=$(marked $gfmfile)
+	html=$(marked "$gfmfile")
 
 	# http://stackoverflow.com/questions/10929453/bash-scripting-read-file-line-by-line
 	while IFS='' read -r line || [[ -n $line ]]; do
@@ -37,8 +36,8 @@ for f in $files; do
 		html="`echo "$html" | sed 's,'"$line"',g'`"
 	done < "$CONFDIR/subs.dat"
 
-	echo $html >> $htmlfile
-	cat "$CONFDIR/tail.html" >> $htmlfile
+	echo "$html" >> "$htmlfile"
+	cat "$CONFDIR/tail.html" >> "$htmlfile"
 
 	echo "$htmlfile"
 done
