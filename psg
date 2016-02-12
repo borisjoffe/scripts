@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+readonly PS_ARGS=aux
+
+ps $PS_ARGS | head -1
+ps --no-headers $PS_ARGS | grep -i $@ | grep -v "psg $@" | grep -v grep
