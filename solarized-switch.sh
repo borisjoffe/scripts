@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 OLD_SOLARIZED=$SOLARIZED
 
