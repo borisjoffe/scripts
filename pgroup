@@ -2,4 +2,4 @@
 
 pid=${1:-}
 pgrp=`ps --no-headers o pgrp -p"$pid"` # get process group
-echo "$pgrp"
+echo "$pgrp" | cut -c2- # remove leading space
