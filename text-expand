@@ -1,0 +1,31 @@
+#!/bin/bash
+
+ARGS='--delay 100'
+#TYPE_ARGS=$ARGS
+KEY_ARGS=$ARGS
+
+dbg() {
+	false && notify.sh $@
+}
+
+#xdotool type $TYPE_ARGS 'HELLO'
+xdotool key $KEY_ARGS ctrl+shift+Left
+xdotool key $KEY_ARGS ctrl+x
+#sleep 1
+#notify.sh -- title "buffer: `xsel -b`"
+
+# Bugs:
+# - certain characters don't work in shortcuts
+# - clipboard is erased (use primary buffer instead)
+
+shortcut=$(xsel -b)
+dbg -- "shortcut: $shortcut"
+
+file=$HOME/.expansions/$shortcut
+[ ! -f $file ] && notify.sh "Shortcut $shortcut not found"
+dbg -- "file: $file"
+
+text=`cat "$file"`
+dbg -- "text: $text"
+
+xdotool type "$text"
