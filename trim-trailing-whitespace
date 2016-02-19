@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# operates on text, not files
+readonly re='s/\s*$//'
+
+sed $re "$@"
