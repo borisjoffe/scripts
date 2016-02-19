@@ -1,4 +1,8 @@
 #!/usr/bin/zsh
 
+# TODO: fix it to work in bash as well
 # couldn't get it to work with bin/bash event with <() process substitution
-cat =(wrap "$@") > "$@"
+
+for file in $@; do
+	cat =(wrap "$file") > "$file"
+done
