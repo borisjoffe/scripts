@@ -1,2 +1,4 @@
 #!/bin/bash
-fold -w 79 -s $@
+
+# break line on spaces
+fold -w 79 -s $@ | trim-trailing-whitespace
