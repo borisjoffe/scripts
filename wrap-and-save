@@ -1,0 +1,4 @@
+#!/usr/bin/zsh
+
+# couldn't get it to work with bin/bash event with <() process substitution
+cat =(wrap "$@") > "$@"

@@ -1,0 +1,2 @@
+#!/bin/bash
+fold -w 79 -s $@
