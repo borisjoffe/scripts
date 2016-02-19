@@ -1,0 +1,21 @@
+#!/bin/bash
+
+USAGE="Convert spaces to tabs in place
+\nunexpand-and-save 4 file1 [file2 file3...]"
+
+usage.sh "$USAGE" "$@" && exit
+
+if [[ $# -lt 2 ]]; then
+	unexpand-and-save --help
+	exit
+fi
+
+tabsize=${1:-4}
+
+shift
+files=( $@ )
+
+for file in $files; do
+	unexpand -t$tabsize "$file" > "$file.tmp"
+	mv "$file.tmp" "$file"
+done
