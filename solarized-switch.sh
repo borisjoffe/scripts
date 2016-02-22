@@ -17,9 +17,9 @@ fi
 #fish -c "source $HOME/bin/solarized-switch.fish"
 
 if [[ $SOLARIZED == 1 ]]; then
-	$DISPLAY && xrdb -override "$HOME/.Xresources.solarized"
+	[ $DISPLAY ] && xrdb -override "$HOME/.Xresources.solarized"
 	alias tmux='tmux-dark.sh'
 elif [[ $DISPLAY && $SOLARIZED == 2 ]]; then
-	$DISPLAY && xrdb -override "$HOME/.Xresources.solarized-light"
+	[ $DISPLAY ] && xrdb -override "$HOME/.Xresources.solarized-light"
 	alias tmux='tmux-light.sh'
 fi
