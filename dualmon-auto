@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Turn on dual monitors if plugged in - breaks X sometimes?
+xrandr --current | grep VGA1 > /dev/null
+[ $? ] && dualmon on &
