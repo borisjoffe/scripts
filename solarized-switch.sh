@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OLD_SOLARIZED=$SOLARIZED
+export OLD_SOLARIZED=$SOLARIZED
 
 if [ $1 ]; then
 	export SOLARIZED=$1
@@ -17,9 +17,9 @@ fi
 #fish -c "source $HOME/bin/solarized-switch.fish"
 
 if [[ $SOLARIZED == 1 ]]; then
-	xrdb -override "$HOME/.Xresources.solarized"
+	$DISPLAY && xrdb -override "$HOME/.Xresources.solarized"
 	alias tmux='tmux-dark.sh'
-elif [[ $SOLARIZED == 2 ]]; then
-	xrdb -override "$HOME/.Xresources.solarized-light"
+elif [[ $DISPLAY && $SOLARIZED == 2 ]]; then
+	$DISPLAY && xrdb -override "$HOME/.Xresources.solarized-light"
 	alias tmux='tmux-light.sh'
 fi
