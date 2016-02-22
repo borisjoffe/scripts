@@ -1,3 +1,3 @@
 #!/bin/bash
 
-awk '{print $NF}'
+awk $@ '{print $NF}'
