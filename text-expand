@@ -16,7 +16,9 @@ xdotool key $KEY_ARGS ctrl+x
 
 # Bugs:
 # - certain characters don't work in shortcuts
+#	- impl: go Left until first char is whitespace
 # - clipboard is erased (use primary buffer instead)
+# - multiline expansions
 
 shortcut=$(xsel -b)
 dbg -- "shortcut: $shortcut"
