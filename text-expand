@@ -24,7 +24,12 @@ shortcut=$(xsel -b)
 dbg -- "shortcut: $shortcut"
 
 file=$HOME/.expansions/$shortcut
-[ ! -f $file ] && notify.sh "Shortcut $shortcut not found"
+if [ ! -f $file ]; then
+	notify.sh "Shortcut $shortcut not found"
+	# replace text with itself
+	xdotool type "$shortcut"
+fi
+
 dbg -- "file: $file"
 
 text=`cat "$file"`
