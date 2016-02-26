@@ -1,0 +1,7 @@
+#!/bin/bash
+
+searchTerm=$1
+shift
+directoryAndArgs=$@
+
+ls -lh $directoryAndArgs | grep -i $searchTerm
