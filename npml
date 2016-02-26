@@ -28,6 +28,7 @@ if (( $cmd_is_install + $cmd_is_local == 0 )); then
 	[ ! -f package.json ] && echo 'No "package.json". Exiting.' && exit
 
 	echo "Running $npm"
+	echo $npm_command
 	$npm_command
 
 	exit
@@ -79,6 +80,7 @@ npm=npm
 npm_command="$npm --registry $local_registry $@"
 
 echo "Running $npm command with local registry: $local_registry"
+echo $npm_command
 $npm_command
 
 ###################################
