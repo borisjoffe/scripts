@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Modified from http://unix.stackexchange.com/questions/34248/how-can-i-find-broken-symlinks
+dir=${1:-.}
+find "$dir" -xtype l
