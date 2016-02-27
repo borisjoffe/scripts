@@ -1,5 +1,8 @@
 #!/bin/bash
 
 # Modified from http://unix.stackexchange.com/questions/34248/how-can-i-find-broken-symlinks
+
+set -ueo pipefail
+
 dir=${1:-.}
 find "$dir" -xtype l
