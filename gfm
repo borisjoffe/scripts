@@ -2,9 +2,14 @@
 
 # Hack to convert GitHub-Flavored Markdown to HTML without
 # using GitHub's API (works offline)
-# Deps: ~/.gfm/{head.html,tail.html,subs.dat}, marked(npm)
 
 set -u
+
+requires marked
+requires-file ~/.gfm/{head.html,tail.html,subs.dat}
+
+usage.sh "gfm [FILES]..." $@ && exit
+
 CONFDIR="$HOME/.gfm"
 
 if [[ $# -lt 1 ]]; then
@@ -21,7 +26,7 @@ for f in $files; do
 	#echo $gfmfile && continue
 	[ ! -f "$gfmfile" ] && echo "File not found: $gfmfile" && continue
 
-	htmlfile=$(echo "$gfmfile" | sed 's/\..*$/\.html/')
+	htmlfile="$gfmfile.html"
 	cat "$CONFDIR/head.html" > "$htmlfile"
 
 	# Replace title
@@ -32,7 +37,7 @@ for f in $files; do
 
 	# http://stackoverflow.com/questions/10929453/bash-scripting-read-file-line-by-line
 	while IFS='' read -r line || [[ -n $line ]]; do
-		echo "sed: $line"
+		dbg "sed: $line"
 		html="`echo "$html" | sed 's,'"$line"',g'`"
 	done < "$CONFDIR/subs.dat"
 
