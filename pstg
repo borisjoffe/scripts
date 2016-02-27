@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -uoe pipefail
+
+usage.sh "pstg SEARCHTERM [beforeLines] [afterLines]" $@ && exit
+
+if [[ $# -lt 1 ]]; then
+	pstg --help
+	exit
+fi
+
+searchTerm=$1
+beforeLines=${2:-2}
+afterLines=${3:-6}
+
+pstreeArgs=-pha
+grepArgs=-i
+
+pstree $pstreeArgs | grep $grepArgs -B$beforeLines -A$afterLines "$searchTerm"
