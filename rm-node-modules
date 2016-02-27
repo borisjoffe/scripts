@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Removes the node_modules folder (wrapped as a script to avoid accidentally mistyping arguments to rm)
+
+set -ueo pipefail
+
+rm -rf ./node_modules
