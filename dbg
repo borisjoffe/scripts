@@ -1,2 +1,4 @@
 #!/bin/bash
-echo "[DBG]: $@"
+if [ -n "$DBG" ]; then
+	echo "[DBG]: $@"
+fi
