@@ -1,13 +1,15 @@
 #!/bin/bash
 
 # Lists directories directly in specified path (or current directory if not specified)
+# If no directories are found, exit status is 2 (same as ls) and nothing is printed to the screen
 
 set -ueo pipefail
 
 dir=${1:-}
 
+# avoid printing error when no directories exist
 if [ -z "$dir" ]; then
-	command ls -d */
+	command ls -d -- */ 2> /dev/null
 else
-	command ls -d "$dir/*/"
+	command ls -d "$dir/*/" 2> /dev/null
 fi
