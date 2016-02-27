@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Shortcut for find . -maxdepth <num> '*some-pattern*'
+
+set -uoe pipefail
+
+usage.sh "findp PATTERN [maxdepth]\n\nPattern is a regular expression and automatically surrounded with '*' regex unless a '^' appears as the first character or a '$' appears as the last character" $@ && exit
+
+if [[ $# -lt 1 ]]; then
+	findp --help
+	exit
+fi
+
+searchTerm=$1
+maxdepth=${2:-}
+dir=.
+
+if [ -n "$maxdepth" ]; then
+	maxdepth="-maxdepth $maxdepth"
+fi
+
+if [[ "${searchTerm:0:1}" == '^' ]]; then
+	# allow BOL regex, remove '^'
+	searchTerm="${searchTerm:2}"
+else
+	searchTerm="*$searchTerm"
+fi
+
+if [[ "${searchTerm:0-1}" == '$' ]]; then
+	# allow EOL regex, remove '$'
+	searchTerm="${searchTerm%?}"
+else
+	searchTerm="$searchTerm*"
+fi
+
+find $dir $maxdepth -iname "${searchTerm}"
+
