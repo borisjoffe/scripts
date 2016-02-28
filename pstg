@@ -14,6 +14,6 @@ beforeLines=${2:-2}
 afterLines=${3:-6}
 
 pstreeArgs=-pha
-grepArgs=-i
+grepArgs="-i --color=always"
 
-pstree $pstreeArgs | grep $grepArgs -B$beforeLines -A$afterLines "$searchTerm"
+pstree $pstreeArgs | grep -v 'pstree' | grep -v 'pstg' | grep -v grep | grep $grepArgs -B$beforeLines -A$afterLines "$searchTerm"
