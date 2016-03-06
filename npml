@@ -15,6 +15,7 @@ cmd=${1:-}
 # Use pnpm for local installs
 ###################################
 cmd_is_install=`status "(( $(expr match $cmd i) ))"`
+# TODO: check for --global as well
 cmd_is_local=$(( 1 - $(status array-contains '-g' $@) ))
 
 if (( $cmd_is_install + $cmd_is_local == 0 )); then
