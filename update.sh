@@ -13,6 +13,8 @@ sudo echo "Starting update..." # to get sudo password prompt before async work s
 run "dropbox-backup.sh" &
 run "sudo pacmatic -Syu"
 run "npml update -g"
+run "pip-upgrade-all"
+run "sudo pip install --upgrade pip"
 
 if [[ $1 == "all" ]]; then
 	run "pushd /data/src; git-update-subdirs.sh; popd;"
