@@ -1,0 +1,22 @@
+#!/bin/bash
+
+cmd=$(basename $0)
+USAGE="Convert tabs to spaces in place
+\n$cmd <number of spaces> file1 [file2 file3...]"
+
+usage.sh "$USAGE" "$@" && exit
+
+if [[ $# -lt 2 ]]; then
+	$cmd --help
+	exit
+fi
+
+tabsize=${1:-4}
+
+shift
+files=( $@ )
+
+for file in $files; do
+	expand -t$tabsize "$file" > "$file.tmp"
+	mv "$file.tmp" "$file"
+done
