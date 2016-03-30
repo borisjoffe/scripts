@@ -61,7 +61,7 @@ case $cmd in
 			kill $npm_lazy_pid
 			echo "npm_lazy server was stopped"
 		else
-			DBG && echo "npm_lazy server was already stopped"
+			$DBG && echo "npm_lazy server was already stopped"
 		fi
 
 		exit
