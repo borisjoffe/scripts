@@ -1,0 +1,13 @@
+#!/bin/bash
+
+requires compute-sum bc
+
+set -ueo pipefail
+
+# Inspired by https://github.com/paulmillr/dotfiles/blob/master/home/.zshrc.sh
+# Above link is Copyright Paul Miller (MIT LICENSE)
+
+app=${1:-}
+ram=$(ps aux | grep $app | grep -v grep | grep -v $0 | awk '{print $6}' | compute-sum)
+ram=$(echo "scale=2; $ram/1024" | bc)
+echo "$ram MB"
