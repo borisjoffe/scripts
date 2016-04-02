@@ -10,6 +10,7 @@ requires npm_lazy pnpm status array-contains runsilent || exit
 requires-file ~/.npm_lazy.config.js || exit
 
 cmd=${1:-}
+DBG=${DBG:-}
 
 ###################################
 # Use pnpm for local installs
