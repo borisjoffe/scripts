@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 2 min
-SLEEPTIME=30
+SLEEPTIME=60
 # for debugging
 #SLEEPTIME=10
 
