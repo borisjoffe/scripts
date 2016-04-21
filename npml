@@ -11,6 +11,7 @@ requires-file ~/.npm_lazy.config.js || exit
 
 cmd=${1:-}
 DBG=${DBG:-}
+NPML=${NPML:-}    # force npm_lazy instead of pnpm for local installs
 
 ###################################
 # Use pnpm for local installs
@@ -19,7 +20,7 @@ cmd_is_install=`status "(( $(expr match $cmd i) ))"`
 # TODO: check for --global as well
 cmd_is_local=$(( 1 - $(status array-contains '-g' $@) ))
 
-if (( $cmd_is_install + $cmd_is_local == 0 )); then
+if (( $cmd_is_install + $cmd_is_local == 0 )) && [ -z "$NPML" ]; then
 	# TODO: fix later
 	# don't use npm_lazy registry due to the following error:
 	# error [500] Error:  [Error: [done] Could not find version]
