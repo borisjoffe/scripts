@@ -5,4 +5,10 @@
 set -ueo pipefail
 
 dir=${1:-.}
-find "$dir" -xtype l
+depth=${2:-}
+
+if [ -z "$depth" ]; then
+    find "$dir" -xtype l
+else
+    find "$dir" -maxdepth $depth -xtype l
+fi
