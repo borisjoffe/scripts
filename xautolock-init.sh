@@ -6,9 +6,15 @@
 
 set -u
 
+LOCK_TIME_MIN=10
+NOTIFY_TIME_SEC=5
+KILL_TIME_MIN=20
+
 # Suspend doesn't work with physlock
-#readonly locker="physlock -d -s"
-readonly locker="slock"
+#readonly locker='physlock -d -s'
+readonly locker='slock'
+readonly killer='systemctl suspend'
+readonly notifier='xset dpms force off'
 
 pid=`pidof xautolock`
 if [[ "$pid" -ne 0 ]]; then
@@ -26,9 +32,9 @@ else
 fi
 
 xautolock -detectsleep -nowlocker "$locker" \
-	-time 10 -locker "$locker" \
-	-notify 5 -notifier "xset dpms force off" \
-	-killtime 20 -killer "systemctl suspend"
+	-time $LOCK_TIME_MIN -locker "$locker" \
+	-killtime $KILL_TIME_MIN -killer "$killer" \
+	-notify $NOTIFY_TIME_SEC -notifier "$notifier"
 #    -secure
 
 echo "[DONE] xautolock started"
