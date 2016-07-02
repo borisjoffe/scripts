@@ -4,7 +4,7 @@
 
 set -uoe pipefail
 
-usage.sh "findp PATTERN [maxdepth]\n\nPattern is a regular expression and automatically surrounded with '*' regex unless a '^' appears as the first character or a '$' appears as the last character" $@ && exit
+usage.sh "$(basename $0) PATTERN [maxdepth]\n\nPattern is a regular expression and automatically surrounded with '*' regex unless a '^' appears as the first character or a '$' appears as the last character" $@ && exit
 
 if [[ $# -lt 1 ]]; then
 	findp --help
