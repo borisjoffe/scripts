@@ -2,7 +2,12 @@
 
 set -ueo pipefail
 
-USAGE="$(basename $0) [i3 STARTUP CONFIG FILE]\n\nDefault file is 'startup' in the ~/.config/i3 directory if not specified"
+read -r -d '' USAGE << EOM || true
+$(basename $0) [i3 STARTUP CONFIG FILE]
+
+Default file is 'startup' in the ~/.config/i3 directory if not specified
+EOM
+
 usage.sh "$USAGE" $@ && exit
 
 CONFIG_DIR=${CONFIG_DIR:-~/.config/i3}
@@ -16,12 +21,7 @@ while IFS='' read -r line || [[ -n $line ]]; do
 			$0 $file
 		else
 			i3-msg "$line"
-			if [[ $line =~ "^exec " ]]; then
-				# wait when executing command
-				#sleep 1
-			else
-			fi
-				sleep 0.3
+			sleep 0.3
 		fi
 	else
 		#echo "Skipping: $line"
