@@ -2,16 +2,30 @@
 
 set -ueo pipefail
 
+CONFIG_DIR=${CONFIG_DIR:-~/.config/i3}
+
 read -r -d '' USAGE << EOM || true
 $(basename $0) [i3 STARTUP CONFIG FILE]
 
-Default file is 'startup' in the ~/.config/i3 directory if not specified
+i3 STARTUP CONFIG FILE
+	Default config file is 'startup' in the \$CONFIG_DIR directory
+
+	Specify as absolute path ('\$CONFIG_DIR/startup') or path relative
+	to CONFIG_DIR ('startup')
+
+	Each line should be command to be sent to i3-msg, a comment (starts
+	with '#'), an include ('include some-other-file') or a blank line.
+
+CONFIG_DIR = $CONFIG_DIR
+
 EOM
 
 usage.sh "$USAGE" $@ && exit
 
-CONFIG_DIR=${CONFIG_DIR:-~/.config/i3}
 startupFile=${1:-startup}
+if [[ ! $(realpath $startupFile) =~ "^$CONFIG_DIR" ]]; then
+	startupFile="$CONFIG_DIR/$startupFile"
+fi
 
 while IFS='' read -r line || [[ -n $line ]]; do
 	if [[ -n "$line" && "${line:0:1}" != '#' ]]; then
@@ -26,4 +40,4 @@ while IFS='' read -r line || [[ -n $line ]]; do
 	else
 		#echo "Skipping: $line"
 	fi
-done < $CONFIG_DIR/$startupFile
+done < $startupFile
