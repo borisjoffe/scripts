@@ -1,10 +1,15 @@
 #!/bin/bash
 
-# npm wrapper that wraps pnpm and npm_lazy
-# - uses pnpm for `npm install` (local)
-# - uses npm_lazy for everything else and automatically starts and shuts down the npm_lazy server
-
 set -ueo pipefail
+
+read -r -d '' USAGE << EOM || true
+npm wrapper that wraps pnpm and npm_lazy
+
+ * uses pnpm for \`npm install\` (local)
+ * uses npm_lazy for everything else and automatically starts and shuts down the npm_lazy server
+EOM
+
+usage.sh "$USAGE" $@ && exit
 
 requires npm_lazy pnpm status array-contains runsilent || exit
 requires-file ~/.npm_lazy.config.js || exit
