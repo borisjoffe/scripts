@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+read -r -d '' USAGE << EOM || true
+Find Duplicate Files (based on size first, then MD5 hash)
+
+* This dup finder saves time by comparing size first, then md5sum.
+* It doesn't delete anything, just lists the files.
+
+Adapted from http://www.commandlinefu.com/commands/view/3555/find-duplicate-files-based-on-size-first-then-md5-hash
+EOM
+
+usage.sh "$USAGE" $@ && exit
+
+UNIQ_ARGS='-w32 --all-repeated=separate'
+UNIQ_ARGS=
+
+find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq $UNIQ_ARGS
