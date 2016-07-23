@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# Bash calculator hack: http://askubuntu.com/questions/378661/any-command-line-calculator-for-ubuntu
-calc="${@//p/+}"
-calc="${calc//x/*}"
-echo "$(($calc))"
+requires bc
+
+echo "$@" | bc -l
