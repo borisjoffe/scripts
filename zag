@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -ueo pipefail
+shopt -qs globstar
+
+# USAGE='Fast ag search of zim notebook'
+
+ZIM_NOTEBOOK_FILE=~/.config/zim/notebooks.list
+
+requires ag
+requires-file $ZIM_NOTEBOOK_FILE
+
+# Get default zim notebook or use user specified directory
+ZIM_DIR="${ZIM_DIR:-$(grep Default $ZIM_NOTEBOOK_FILE | awk -F= '{print $2}')}"
+# echo $ZIM_DIR
+
+# replace "~" with full name of home directory - otherwise weird shell errors occur
+ZIM_DIR=${ZIM_DIR/\~/$HOME}
+
+ag -u -t $@ $ZIM_DIR/**/*txt
