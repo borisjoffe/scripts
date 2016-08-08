@@ -17,7 +17,9 @@ mkdir $PROJECT{,.git}
 cd $PROJECT.git || exit
 git init --bare
 cd $CURDIR || exit
+echo "Created $CURDIR/$PROJECT.git bare git repository"
 
 echo -e "#!/bin/bash\n\nGIT_WORK_TREE=$CURDIR/$PROJECT/ git checkout -f" > $CURDIR/$PROJECT.git/hooks/post-receive
 
 chmod u+x $CURDIR/$PROJECT.git/hooks/post-receive
+echo "Created post-receive hook"
