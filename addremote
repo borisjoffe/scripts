@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+read -r -d '' USAGE << EOM || true
+$(basename $0) REMOTE PROJECT_FOLDER
+
+* REMOTE	IP or Hostname of the remote
+
+
+Optional environmental variables:
+
+* REMOTE_NAME	Name that git uses for the remote. Defaults to REMOTE.
+
+* USER		Username on the remote server. Defaults to local username.
+
+EOM
+
+usage.sh "$USAGE" $@ && exit
+
+
+REMOTE=${1:?Specify the hostname or IP of the remote}
+PROJECT=${2:?Specify the project folder on the remote (without the git extension)}
+
+REMOTE_NAME=${REMOTE_NAME:-REMOTE}
+USER=$USER
+
+git remote add $REMOTE_NAME $USER@$REMOTE:$PROJECT.git
+git push $REMOTE_NAME --all
