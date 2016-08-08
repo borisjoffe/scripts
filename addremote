@@ -7,6 +7,7 @@ $(basename $0) REMOTE PROJECT_FOLDER
 
 * REMOTE	IP or Hostname of the remote
 
+Note: Change into the top level directory of your git project before running
 
 Optional environmental variables:
 
@@ -18,12 +19,21 @@ EOM
 
 usage.sh "$USAGE" $@ && exit
 
-
 REMOTE=${1:?Specify the hostname or IP of the remote}
 PROJECT=${2:?Specify the project folder on the remote (without the git extension)}
 
-REMOTE_NAME=${REMOTE_NAME:-REMOTE}
+REMOTE_NAME=${REMOTE_NAME:-$REMOTE}
 USER=$USER
 
+# Prevent pushing the wrong git project (must be in the top level directory
+if [ ! -d .git ]; then
+	echo "Please go to your top level git directory for the project you want to push"
+	exit
+fi
+
 git remote add $REMOTE_NAME $USER@$REMOTE:$PROJECT.git
-git push $REMOTE_NAME --all
+echo "Added: $USER@$REMOTE:$PROJECT.git as the remote named $REMOTE_NAME"
+
+echo 'Run the following command to upload all local branches to the remote'
+echo "git push $REMOTE_NAME --all"
+#git push $REMOTE_NAME --all
