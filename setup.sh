@@ -4,6 +4,7 @@ SCRIPTS_REPO=scripts
 DOTFILES_REPO=dotfiles
 
 # Quick install
+# curl -L http://bit.ly/boris-setup | sh
 # curl https://raw.githubusercontent.com/borisjoffe/scripts/master/setup.sh | sh
 
 git clone https://github.com/borisjoffe/$DOTFILES_REPO.git dotfiles
