@@ -25,7 +25,7 @@ PROJECT=${2:?Specify the project folder on the remote (without the git extension
 REMOTE_NAME=${REMOTE_NAME:-$REMOTE}
 USER=$USER
 
-# Prevent pushing the wrong git project (must be in the top level directory
+# Prevent pushing the wrong git project (must be in the top level directory)
 if [ ! -d .git ]; then
 	echo "Please go to your top level git directory for the project you want to push"
 	exit
