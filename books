@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+read -r -d '' USAGE << EOM || true
+$(basename $0) BOOK_TITLE
+
+Search for information about a book
+
+Returns json object with:
+	title,
+	authors,
+	printType,  # e.g. "BOOK"
+	pageCount,
+	isbn,       # ISBN-13
+
+EOM
+usage.sh "$USAGE" $@ && exit
+
+requires jq
+
+# API Reference: https://developers.google.com/books/docs/v1/reference/
+# https://developers.google.com/books/docs/v1/getting_started
+BOOKS_API_URL='https://www.googleapis.com/books/v1/volumes?q='
+
+searchTerm=${*?Enter book title to search for}
+
+searchTerm=${searchTerm/ /+}
+
+url=$BOOKS_API_URL$searchTerm
+
+curl -s $url | \
+	jq '.items[0].volumeInfo | {title, authors, printType, pageCount, isbn: .industryIdentifiers[0].identifier}'
