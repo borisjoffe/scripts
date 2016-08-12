@@ -1,0 +1,49 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+read -r -d '' USAGE << EOM || true
+$(basename $0) MOVIE_NAME
+
+Returns JSON information about a movie
+
+Information includes:
+	Title,
+	Year,
+	Rated,
+	Released,
+	Genre,
+	Runtime,
+	Actors,
+	Director,
+	and more
+EOM
+usage.sh "$USAGE" $@ && exit
+
+requires jq
+
+movieName=${1?Enter a movie name}
+movieName=${movieName/ /+}
+
+# OMDB API
+OMDB_URL='http://www.omdbapi.com/?tomatoes=true&t='
+url=$OMDB_URL$movieName
+
+curl -s $url | jq '. | del(.Poster, .Response, .Website, .Production)'
+
+exit
+
+SERVER_KEY_HELP_URL='https://www.themoviedb.org/account/signup'
+TMDB_KEY=${TMDB_KEY?needs to be created and set. Go to $SERVER_KEY_HELP_URL to generate your the API key}
+
+# TMDB API Overview: https://www.themoviedb.org/documentation/api
+# TMDB API Docs: http://docs.themoviedb.apiary.io/
+TMDB_URL='https://api.themoviedb.org/3'
+API_KEY='api_key='$TMDB_KEY
+SEARCH_PATH='search/movie?query='$movieName
+
+movieId=$(curl -s "$TMDB_URL/$SEARCH_PATH&$API_KEY" | jq '.results[0].id')
+
+curl -s "$TMDB_URL/movie/$movieId?$API_KEY" | \
+	jq \
+	'{id, imdb_id, title, status, release_date, runtime, genres: [.genres[].name], overview, tagline, revenue, budget, languages: [.spoken_languages[].name]}'
