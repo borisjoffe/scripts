@@ -25,7 +25,7 @@ BOOKS_API_URL='https://www.googleapis.com/books/v1/volumes?q='
 
 searchTerm=${*?Enter book title to search for}
 
-searchTerm=${searchTerm/ /+}
+searchTerm=${searchTerm// /+}
 
 url=$BOOKS_API_URL$searchTerm
 
