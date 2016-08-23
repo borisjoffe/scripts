@@ -16,6 +16,7 @@ Returns json object with:
 
 EOM
 usage.sh "$USAGE" $@ && exit
+[ $# -lt 1 ] && $0 --help && exit
 
 requires jq
 
