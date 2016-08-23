@@ -19,6 +19,7 @@ Information includes:
 	and more
 EOM
 usage.sh "$USAGE" $@ && exit
+[ $# -lt 1 ] && $0 --help && exit
 
 requires jq
 
