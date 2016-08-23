@@ -19,21 +19,43 @@ DBG=${DBG:-}
 NPML=${NPML:-}    # force npm_lazy instead of pnpm for local installs
 
 ###################################
+#       npm_lazy config
+###################################
+
+npm_server="npm_lazy --config $HOME/.npm_lazy.config.js"
+npm_server_silent="runsilent $npm_server"
+
+config=~/.npm_lazy.config.js
+[ -f $config ] || echo "Could not find config file: $config" || exit
+
+local_registry=`grep externalUrl $config | awk '{print $2}' | tr -d "',"`
+
+
+###################################
 # Use pnpm for local installs
 ###################################
 cmd_is_install=`status "(( $(expr match $cmd i) ))"`
 # TODO: check for --global as well
 cmd_is_local=$(( 1 - $(status array-contains '-g' $@) ))
 
+# See https://github.com/rstacruz/pnpm/blob/master/docs/custom-registries.md
+USE_CUSTOM_REGISTRY_WITH_PNPM=true
+
 if (( $cmd_is_install + $cmd_is_local == 0 )) && [ -z "$NPML" ]; then
 	# TODO: fix later
 	# don't use npm_lazy registry due to the following error:
 	# error [500] Error:  [Error: [done] Could not find version]
 	npm=pnpm
-	npm_command="$npm $@"
 
 	# Guard against non-node directories because pnpm fails with weird error
 	[ ! -f package.json ] && echo 'No "package.json". Exiting.' && exit
+
+	if [ $USE_CUSTOM_REGISTRY_WITH_PNPM ]; then
+		$0 start  # start npml
+		npm_command="env npm_registry=$local_registry $npm $@"  # use custom reg
+	else
+		npm_command="$npm $@"
+	fi
 
 	echo "Running $npm"
 	echo $npm_command
@@ -45,9 +67,6 @@ fi
 ###################################
 # Use npm_lazy for everything else
 ###################################
-
-npm_server="npm_lazy --config $HOME/.npm_lazy.config.js"
-npm_server_silent="runsilent $npm_server"
 
 case $cmd in
 	"start")
@@ -78,11 +97,6 @@ case $cmd in
 		;;
 esac
 
-
-config=~/.npm_lazy.config.js
-[ -f $config ] || echo "Could not find config file: $config" || exit
-
-local_registry=`grep externalUrl $config | awk '{print $2}' | tr -d "',"`
 
 npm=npm
 npm_command="$npm --registry $local_registry $@"
