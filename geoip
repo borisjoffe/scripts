@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+read -r -d '' USAGE << EOM || true
+$(basename $0) IP_ADDRESS
+EOM
+usage.sh "$USAGE" $@ && exit
+[ $# -lt 1 ] && $0 --help && exit
+
+ip=${1??Enter an IP address}
+
+# use echo to fix broken last char
+echo "$(curl -s ipinfo.io/$ip | jq '.')"
