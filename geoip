@@ -10,5 +10,15 @@ usage.sh "$USAGE" $@ && exit
 
 ip=${1??Enter an IP address}
 
+
+info=$(curl -s ipinfo.io/$ip | jq '.')
+city=$(echo $info | jq -r '.city')
+region=$(echo $info | jq -r '.region')
+country=$(echo $info | jq -r '.country')
+postal=$(echo $info | jq -r '.postal')
+org=$(echo $info | jq -r '.org')
+
+echo "$city, $region, $country ($postal) - $org"
+
 # use echo to fix broken last char
-echo "$(curl -s ipinfo.io/$ip | jq '.')"
+# echo "$(curl -s ipinfo.io/$ip | jq '.')"
