@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+read -r -d '' USAGE << EOM || true
+$(basename $0) SERVICE_NAME COMMAND
+
+$(basename $0) is a light wrapper around systemctl
+
+COMMAND is one of "start", "stop", "stat"
+
+e.g. serv nginx stop
+
+EOM
+usage.sh "$USAGE" $@ && exit
+[ $# -lt 1 ] && $0 --help && exit
+
+name=${1?"Input service name"}
+name="$name.service"
+
+subcmd=${2?"Input subcommand"}
+
+case $subcmd in
+	"start")
+		# TODO: fix later
+		echo "starting $name with $subcmd"
+		sudo systemctl status $name
+		running=$?
+
+		if [ $running != 0 ]; then
+			echo "$name not running. will start"
+			sudo systemctl start $name > /dev/null
+			echo "started: $name"
+		else
+			echo "already running: $name"
+		fi
+
+		sleep 2
+		sudo systemctl status $name
+		exit ;;
+	"stop")
+		sudo systemctl stop $name
+		sudo systemctl status $name
+		exit ;;
+	"stat")
+		sudo systemctl status $name
+		exit ;;
+	*)
+		echo "subcommand: $subcmd is invalid. exiting."
+		exit ;;
+esac
