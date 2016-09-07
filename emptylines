@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+read -r -d '' USAGE << EOM || true
+$(basename $0) FILENAME
+
+Return indexes of empty lines in a file (first line is "1")
+EOM
+usage.sh "$USAGE" $@ && exit
+[ $# -lt 1 ] && $0 --help && exit
+
+filename=${1??Enter a filename}
+
+grep -n '^$' $filename | cut -d: -f-1
