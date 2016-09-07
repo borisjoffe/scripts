@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+read -r -d '' USAGE << EOM || true
+$(basename $0) COINBASE_CSV_FILE
+
+* Prints nicely formatted version of your Coinbase CSV transaction history
+* Removes unnecessary columns
+EOM
+usage.sh "$USAGE" $@ && exit
+[ $# -lt 1 ] && $0 --help && exit
+
+requires csvcut csvlook
+
+# TODO: change to command line flags
+# Displayed columns are:
+# Timestamp, Amount, To, Transfer Total, Transfer Fee, Transfer Payment Method
+CSV_COLUMNS=${CSV_COLUMNS:-1,3,5,8,10,12}
+
+
+csvfile=${1??Enter the csv filename for your coinbase history}
+
+# start at the line right after the first blank line in the file
+# First 4 rows are general account info
+# all history csv has 4 lines at top, transactions report has 3
+SKIP_LINES=$(emptylines $csvfile | head -1)
+SKIP_LINES=$((SKIP_LINES+1))
+
+csvcut -c "$CSV_COLUMNS" <(tail -n+$SKIP_LINES $csvfile) | csvlook
