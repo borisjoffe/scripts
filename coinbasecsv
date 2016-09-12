@@ -11,7 +11,7 @@ EOM
 usage.sh "$USAGE" $@ && exit
 [ $# -lt 1 ] && $0 --help && exit
 
-requires csvcut csvlook
+requires csvcut csvlook emptylines
 
 # TODO: change to command line flags
 # Displayed columns are:
