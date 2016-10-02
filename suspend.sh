@@ -11,8 +11,10 @@ readonly input=${1:-ram}
 
 case $input in
 	ram|mem|memory|suspend)
-		cmd="suspend"
-		msg="Suspending"
+		# created systemd unit to take care of screenlock
+		systemctl suspend
+		# cmd="suspend"
+		# msg="Suspending"
 		;;
 	disk|hibernate)
 		cmd="hibernate"
