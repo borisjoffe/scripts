@@ -31,10 +31,10 @@ else
 	echo "Process not running...starting xautolock"
 fi
 
-xautolock -detectsleep -nowlocker "$locker" \
+nohup xautolock -detectsleep -nowlocker "$locker" \
 	-time $LOCK_TIME_MIN -locker "$locker" \
 	-killtime $KILL_TIME_MIN -killer "$killer" \
-	-notify $NOTIFY_TIME_SEC -notifier "$notifier"
+	-notify $NOTIFY_TIME_SEC -notifier "$notifier" &
 #    -secure
 
 echo "[DONE] xautolock started"
