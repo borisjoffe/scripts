@@ -7,7 +7,8 @@ $(basename $0) SERVICE_NAME COMMAND
 
 $(basename $0) is a light wrapper around systemctl
 
-COMMAND is one of "start", "stop", "stat"
+COMMAND is one of "start", "stop", "stat". Other commands are
+passed through to systemctl
 
 e.g. serv nginx stop
 
@@ -46,6 +47,8 @@ case $subcmd in
 		sudo systemctl status $name
 		exit ;;
 	*)
-		echo "subcommand: $subcmd is invalid. exiting."
+		# pass command through to systemctl
+		sudo systemctl $subcmd $name
+		#echo "subcommand: $subcmd is invalid. exiting."
 		exit ;;
 esac
