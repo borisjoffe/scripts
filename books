@@ -31,4 +31,5 @@ searchTerm=${searchTerm// /+}
 url=$BOOKS_API_URL$searchTerm
 
 curl -s $url | \
-	jq '.items[0].volumeInfo | {title, authors, description, printType, pageCount, isbn: .industryIdentifiers[0].identifier, publishedDate}'
+	jq '.items[0].volumeInfo | {title, authors, description, printType, pageCount, isbn: .industryIdentifiers[0].identifier, publishedDate, categories, language, averageRating, ratingsCount }'
+	# jq '.items[0].volumeInfo'
