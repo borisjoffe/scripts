@@ -1,4 +1,7 @@
 #!/bin/bash
+
+USAGE="dbg [ARGS...]"
+
 if [ -n "$DBG" ]; then
 	echo "[DBG]: $@"
 fi
