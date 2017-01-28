@@ -1,0 +1,15 @@
+#!/bin/bash
+
+NUMFMT_ARGS="--padding=10"
+NUMFMT_ARGS=""
+
+arg1=$1
+[ -n "$2" ] && shift
+
+size=$(stat -c%s $@)
+
+if [ $arg1 = "-h" ]; then
+	numfmt --to=iec-i --suffix=B $NUMFMT_ARGS $size
+else
+	echo $size
+fi
