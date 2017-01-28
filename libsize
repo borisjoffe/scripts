@@ -12,8 +12,8 @@ MINIFIER=uglifyjs
 MINIFIER_ARGS="-m names"
 FORCE=${FORCE-}   # force redownload / regeneration of files
 
-requires filesize $MINIFIER
-#requires-file
+requires filesize $MINIFIER || exit
+#requires-file SOME_FILE || exit
 
 url=$1
 
