@@ -9,7 +9,8 @@ usage.sh "$USAGE" $@ && exit
 [ $# -lt 1 ] && $0 --help && exit
 
 MINIFIER=uglifyjs
-FORCE=""   # force redownload / regeneration of files
+MINIFIER_ARGS="-m names"
+FORCE=${FORCE-}   # force redownload / regeneration of files
 
 requires filesize $MINIFIER
 #requires-file
@@ -23,10 +24,11 @@ else
 	[[ $FORCE || ! -f $filename ]] && curl -sL $url > $filename
 fi
 
+echo "# $filename"
 echo "Original: $(filesize -h $filename)"
 
 minified="${filename%.*}.min.js"
-[[ $FORCE || ! -f $minified ]] && $MINIFIER $filename > $minified
+[[ $FORCE || ! -f $minified ]] && $MINIFIER $MINIFIER_ARGS $filename > $minified
 echo "Minified: $(filesize -h $minified)"
 
 mingzipped="${filename%.*}.min.js.gz"
