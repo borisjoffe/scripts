@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+read -r -d '' USAGE << EOM || true
+$(basename $0) [FILENAME | URL]
+EOM
+usage.sh "$USAGE" $@ && exit
+[ $# -lt 1 ] && $0 --help && exit
+
+MINIFIER=uglifyjs
+FORCE=""   # force redownload / regeneration of files
+
+requires filesize $MINIFIER
+#requires-file
+
+url=$1
+
+if [ -f $url ]; then
+	filename=$url
+else
+	filename="${url##*/}"
+	[[ $FORCE || ! -f $filename ]] && curl -sL $url > $filename
+fi
+
+echo "Original: $(filesize -h $filename)"
+
+minified="${filename%.*}.min.js"
+[[ $FORCE || ! -f $minified ]] && $MINIFIER $filename > $minified
+echo "Minified: $(filesize -h $minified)"
+
+mingzipped="${filename%.*}.min.js.gz"
+[[ $FORCE || ! -f $mingzipped ]] && gzip -c $minified > $mingzipped
+echo "Min+Gzip: $(filesize -h $mingzipped)"
