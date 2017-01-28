@@ -1,8 +1,14 @@
 #!/bin/bash
 
-# Redirects output of command with arguments to last argument
-# Example:
-# 	`of echo -e "hello\n" a.txt` is equivalent to `echo -e "hello\n" > a.txt`
+set -ueo pipefail
+
+read -r -d '' USAGE <<\EOM || true
+Redirects output of command with arguments to last argument
+ Example:
+ 	`of echo -e "hello\\n" a.txt` is equivalent to `echo -e "hello\\n" > a.txt`
+EOM
+usage.sh "$USAGE" $@ && exit
+[ $# -lt 1 ] && $0 --help && exit
 
 # http://stackoverflow.com/questions/1853946/getting-the-last-argument-passed-to-a-shell-script
 last=`echo "${@: -1}"`
