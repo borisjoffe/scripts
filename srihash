@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+HASH=384  # allowed hash prefixes are sha256, sha384, and sha512
+
+read -r -d '' USAGE << EOM || true
+$(basename $0) [FILENAME OR URL]
+
+Generate SRI hash (SHA-$HASH) for JS/CSS resources
+
+Examples (css, js with sha384):
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" integrity="sha384-eumbg33EfHRpbzLIm0lGs0JresLNj7c+5beuRW4d11/vF3Wv3YYmuudfOwMsCmp5" crossorigin="anonymous">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" integrity="sha384-EaUkI/FiMJtEXWAl0dCczvbFvjfzsIF1UNKGJvu9p5JIG71Kih7/kQJvYbBL7HOn" crossorigin="anonymous"></script>
+
+See https://www.srihash.org/ for more details
+
+Env vars:
+* FORCE to force redownloading files
+* HASH - can be 256, 384 (default), 512. It is currently: $HASH
+
+EOM
+usage.sh "$USAGE" $@ && exit
+[ $# -lt 1 ] && $0 --help && exit
+
+requires filename-or-url || exit
+#requires-file SOME_FILE || exit
+
+FORCE=${FORCE-}
+filename=$(FORCE=$FORCE filename-or-url $1)
+
+openssl dgst -sha$HASH -binary $filename | openssl base64 -A
+echo # output newline char
