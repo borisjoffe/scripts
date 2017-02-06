@@ -1,0 +1,5 @@
+#!/bin/bash
+
+CITY=${1:-seattle}
+
+curl -s "http://gametonight.in/$CITY/json" | jq
