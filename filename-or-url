@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+read -r -d '' USAGE << EOM || true
+$(basename $0) [FILENAME OR URL]
+
+Return filename of local file or downloads a URL locally and returns the
+downloaded filename.
+
+Set FORCE environmental variable to force download of URL.
+EOM
+usage.sh "$USAGE" $@ && exit
+[ $# -lt 1 ] && $0 --help && exit
+
+#requires SOME_PROGRAM || exit
+#requires-file SOME_FILE || exit
+
+FORCE=${FORCE-}   # force download of remote URL and overwriting the local file
+
+url=$1
+
+if [ -f "$url" ]; then
+	filename="$url"
+else
+	filename="${url##*/}"  # Set filename to filename of remote resource
+	[[ $FORCE || ! -f $filename ]] && curl -sL "$url" > "$filename"
+fi
+
+echo $filename
