@@ -8,29 +8,36 @@ EOM
 usage.sh "$USAGE" $@ && exit
 [ $# -lt 1 ] && $0 --help && exit
 
-MINIFIER=uglifyjs
-MINIFIER_ARGS="-m names"
+JS_MINIFIER=uglifyjs
+CSS_MINIFIER=csso
+JS_MINIFIER_ARGS="-m names"
 FORCE=${FORCE-}   # force redownload / regeneration of files
 
-requires filesize $MINIFIER || exit
+requires err filesize filename-or-url $JS_MINIFIER || exit
 #requires-file SOME_FILE || exit
 
-url=$1
+filename=$(FORCE=$FORCE filename-or-url $1)
 
-if [ -f $url ]; then
-	filename=$url
-else
-	filename="${url##*/}"
-	[[ $FORCE || ! -f $filename ]] && curl -sL $url > $filename
-fi
-
+# Original
 echo "# $filename"
 echo "Original: $(filesize -h $filename)"
 
-minified="${filename%.*}.min.js"
-[[ $FORCE || ! -f $minified ]] && $MINIFIER $MINIFIER_ARGS $filename > $minified
+# Minified
+ext=${filename##*.}
+minified="${filename%.*}.min.$ext"
+
+if [ "$ext" = "js" ]; then
+	[[ $FORCE || ! -f $minified ]] && $JS_MINIFIER $JS_MINIFIER_ARGS $filename > $minified
+elif [ "$ext" = "css" ]; then
+	[[ $FORCE || ! -f $minified ]] && $CSS_MINIFIER $filename > $minified
+else
+	err "Extension is not js or css. It is $ext"
+fi
+
 echo "Minified: $(filesize -h $minified)"
 
-mingzipped="${filename%.*}.min.js.gz"
+# Minified+Gzipped
+mingzipped="${filename%.*}.min.$ext.gz"
 [[ $FORCE || ! -f $mingzipped ]] && gzip -c $minified > $mingzipped
 echo "Min+Gzip: $(filesize -h $mingzipped)"
+
