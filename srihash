@@ -2,7 +2,7 @@
 
 set -ueo pipefail
 
-HASH=384  # allowed hash prefixes are sha256, sha384, and sha512
+HASH=${HASH:-384}  # allowed hash prefixes are sha256, sha384, and sha512
 
 read -r -d '' USAGE << EOM || true
 $(basename $0) [FILENAME OR URL]
