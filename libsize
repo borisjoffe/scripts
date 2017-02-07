@@ -13,7 +13,7 @@ CSS_MINIFIER=csso
 JS_MINIFIER_ARGS="-m names"
 FORCE=${FORCE-}   # force redownload / regeneration of files
 
-requires err filesize filename-or-url $JS_MINIFIER || exit
+requires err filesize filename-or-url $JS_MINIFIER $CSS_MINIFIER || exit
 #requires-file SOME_FILE || exit
 
 filename=$(FORCE=$FORCE filename-or-url $1)
