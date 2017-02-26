@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+read -r -d '' USAGE << EOM || true
+$(basename $0) NUMBER_OF_SCREENSHOTS [DELAY]
+
+Take multiple screenshots with a delay
+EOM
+usage.sh "$USAGE" $@ && exit
+[ $# -lt 1 ] && $0 --help && exit
+
+requires scrot || exit
+#requires-file SOME_FILE || exit
+
+num=${1??Enter number of screenshots}
+shift
+delay=${2:-6}
+
+echo "Taking $num screenshots with a delay of $delay"
+sleep 1
+
+for i in $(seq 1 $num); do
+	notify.sh "taking pic in $delay...";
+	scrot -cd $delay -u;  # Window screenshot
+	notify.sh "Took pic $i / $num";
+	sleep $((delay+1));
+done
