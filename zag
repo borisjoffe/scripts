@@ -17,4 +17,4 @@ ZIM_DIR="${ZIM_DIR:-$(grep Default $ZIM_NOTEBOOK_FILE | awk -F= '{print $2}')}"
 # replace "~" with full name of home directory - otherwise weird shell errors occur
 ZIM_DIR=${ZIM_DIR/\~/$HOME}
 
-ag -u -t $@ $ZIM_DIR/**/*txt
+ag -u -t "$@" $ZIM_DIR/**/*txt
