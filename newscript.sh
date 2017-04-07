@@ -11,4 +11,6 @@ usage.sh "$USAGE" $@ && exit
 #requires SOME_PROGRAM || exit
 #requires-file SOME_FILE || exit
 
-head -n-1 "$0" > "${0%/*}/$1"  # create a copy of this template to start a new script
+newScriptFilename="${0%/*}/$1"
+head -n-3 "$0" > "$newScriptFilename"  # create a copy of this template to start a new script
+chmod u+x "$newScriptFilename"
