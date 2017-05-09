@@ -1,20 +1,40 @@
 #!/bin/bash
 # Depends: notify.sh, vlc, usage.sh
 
-usage.sh "[AUDIO=/path/to/audiofile] timer [NUM MINUTES] [MESSAGE TO SHOW]" $@ && exit
+usage.sh "[AUDIO=/path/to/audiofile] timer [[ALARM TIME] | [NUM MINUTES]] [MESSAGE TO SHOW]" $@ && exit
 
 if [ -z "$1" ]; then
-	amt=300 # 5 minutes
+	amtMinutes=5
 else
-	amt=$(($1*60))
+	amtMinutes=$1
 fi
 
 msg=$2
 
-amtMinutes=$((amt/60))
-echo "The time is now: $(date +%H:%M)"
-echo -e "Timer will be done in $amtMinutes minute(s)\n\tat" $(date +%H:%M -d "$amtMinutes minutes") "("$(date +%F)")"
+nowUnix=$(date +%s)
 
-sleep $amt;
-notify.sh "Timer for $amtMinutes min done" "$msg";
+# Check for alarm time (instead of the number of minutes)
+if [[ "$amtMinutes" =~ ":" ]]; then
+	alarmTime=$amtMinutes
+	futureTimeUnix=$(date -d "$alarmTime" +%s)
+	diff=$((futureTimeUnix - nowUnix))
+	if [[ $diff -le 0 ]]; then
+		diff=$((-diff + 60*60*24))  # add 24h (in sec)
+		: echo "changed diff to $diff"
+	fi
+	amtSeconds=$diff
+	amtMinutes=$((amtSeconds / 60))
+else
+	amtSeconds=$((amtMinutes * 60))
+	alarmTime=$(date +%H:%M -d "$amtMinutes minutes")
+fi
+
+alarmDay=$(date +%F -d "$amtMinutes minutes")
+
+echo "The time is now: $(date +%H:%M)"
+
+echo -e "Timer will be done in $amtMinutes minute(s)\n\tat $alarmTime ($alarmDay)"
+
+sleep $amtSeconds;
+notify.sh "Timer for $alarmTime ($amtMinutes) min done" "$msg";
 [[ $AUDIO ]] && vlc "$AUDIO" 2> /dev/null &
