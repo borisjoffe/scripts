@@ -19,7 +19,7 @@ usage.sh "$USAGE" $@ && exit
 name=${1?"Input service name"}
 name="$name.service"
 
-subcmd=${2?"Input subcommand"}
+subcmd=${2:-stat}
 
 case $subcmd in
 	"start")
@@ -43,7 +43,7 @@ case $subcmd in
 		sudo systemctl stop $name
 		sudo systemctl status $name
 		exit ;;
-	"stat")
+	stat*)
 		sudo systemctl status $name
 		exit ;;
 	*)
