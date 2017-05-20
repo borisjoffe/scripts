@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+read -r -d '' USAGE << EOM || true
+$(basename $0) LIMIT
+EOM
+usage.sh "$USAGE" $@ && exit
+#[ $# -lt 1 ] && $0 --help && exit
+
+#requires SOME_PROGRAM || exit
+#requires-file SOME_FILE || exit
+
+limit=${1:-50}
+output_file=du-inodes.txt
+
+
+# Solution from
+# https://askubuntu.com/questions/316027/find-directories-with-lots-of-files-in
+# TODO: consider a better solution
+
+locate '' | sed 's|/[^/]*$|/|g' | sort | uniq -c | sort -n | tee "$output_file" | tail -$limit
