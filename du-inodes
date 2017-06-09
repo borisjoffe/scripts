@@ -19,4 +19,10 @@ output_file=du-inodes.txt
 # https://askubuntu.com/questions/316027/find-directories-with-lots-of-files-in
 # TODO: consider a better solution
 
+# FAST
 locate '' | sed 's|/[^/]*$|/|g' | sort | uniq -c | sort -n | tee "$output_file" | tail -$limit
+
+
+# SLOW
+#filesystem='/'
+#sudo find $filesystem -xdev -printf '%h\n' | sort | uniq -c | sort -k 1 -n | tee "$output_file" | tail -$limit
