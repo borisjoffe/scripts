@@ -1,5 +1,7 @@
 #!/bin/bash
 
+EXTERNAL_MONITOR_POSITION=right  # in relation to laptop
+
 if [ $2 ]
 then
 	XRANDRCMD="xrandr -d :$2"
@@ -24,7 +26,7 @@ fi
 if [ "$(echo "$1"|grep "on")" ]
 then
 	echo "Turning VGA1 on..."
-	$XRANDRCMD --output VGA1 --left-of LVDS1 --auto
+	$XRANDRCMD --output VGA1 --$EXTERNAL_MONITOR_POSITION-of LVDS1 --auto
 	#echo "Setting multiple monitor settings..."
 	#$XRANDRCMD --output VGA1 --right-of LVDS1 --output LVDS1 --mode 1280x800
 	#$XRANDRCMD --output VGA1 --right-of LVDS1 --mode 1280x1024
