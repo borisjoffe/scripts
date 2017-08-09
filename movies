@@ -26,13 +26,12 @@ requires jq
 movieName=${1?Enter a movie name}
 movieName=${movieName// /+}
 
-# OMDB API
-OMDB_URL='http://www.omdbapi.com/?tomatoes=true&t='
-url=$OMDB_URL$movieName
+# OMDB API - went private. see https://www.patreon.com/posts/api-is-going-10743518
+# OMDB_URL='http://www.omdbapi.com/?tomatoes=true&t='
+# url=$OMDB_URL$movieName
 
-curl -s $url | jq '. | del(.Poster, .Response, .Website, .Production)'
-
-exit
+# curl -s $url | jq '. | del(.Poster, .Response, .Website, .Production)'
+# exit
 
 SERVER_KEY_HELP_URL='https://www.themoviedb.org/account/signup'
 TMDB_KEY=${TMDB_KEY?needs to be created and set. Go to $SERVER_KEY_HELP_URL to generate your the API key}
