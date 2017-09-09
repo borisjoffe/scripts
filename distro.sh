@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [[ $1 =~ "help" ]]; then
-	echo 'First argument (TYPE) can be "id" (default), "name", "pretty_name", etc"'
-	exit
-fi
+set -ueo pipefail
+
+USAGE='First argument (TYPE) can be "id" (default), "name", "pretty_name", etc"'
+usage.sh "$USAGE" $@ && exit
 
 TYPE=${1:-"ID"}
 
