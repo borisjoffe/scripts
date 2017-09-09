@@ -1,3 +1,18 @@
 #!/bin/bash
 
-curl -s https://wtfismyip.com/text
+set -ueo pipefail
+
+USAGE="Gets your external IP address (including IPv6 if applicable)"
+usage.sh "$USAGE" $@ && exit
+
+ip=$(curl -s https://wtfismyip.com/text)
+
+# if IP is IPv6, get IPv4 too
+if [[ "$ip" =~ ":" ]]; then
+	ipv4=$(curl -s https://ipv4.wtfismyip.com/text)
+	echo "IPv4: $ipv4"
+	echo "IPv6: $ip"
+else
+	echo "IPv6: $ip"
+fi
+
