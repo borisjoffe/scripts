@@ -21,9 +21,19 @@ usage.sh "$USAGE" $@ && exit
 function lsRemote() {
 	#shellcheck disable=SC2029
 	ssh $REMOTE_HOST "ls -lh $REMOTE_FOLDER"   # show short files
+
+	#shellcheck disable=SC2029
+	ssh $REMOTE_HOST "ls -lh $REMOTE_FOLDER > $REMOTE_FOLDER/ls.txt" # add public directory listing
 }
 
-[ $1 = "-l" ] && lsRemote && exit
+[ $1 = "ls" ] && lsRemote && exit
+
+if [ $1 = "rm" ]; then
+	#shellcheck disable=SC2029
+	ssh $REMOTE_HOST "rm $REMOTE_FOLDER/$2"
+	lsRemote
+	exit
+fi
 
 sourceFile=${1??Enter a source file}
 remoteName=${2??Enter the short remote name}
