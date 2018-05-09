@@ -8,4 +8,4 @@ setxkbmap -option caps:none,grp:shifts_toggle
 
 
 # remap Caps lock to '8' and '*'
-xmodmap -e 'keycode 66=8 asterisk 8 asterisk 8 asterisk'
+# xmodmap -e 'keycode 66=8 asterisk 8 asterisk 8 asterisk'
