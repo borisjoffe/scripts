@@ -18,17 +18,21 @@ EOM
 usage.sh "$USAGE" $@ && exit
 [ $# -lt 1 ] && $0 --help && exit
 
-function lsRemote() {
-	#shellcheck disable=SC2029
-	ssh $REMOTE_HOST "ls -lh $REMOTE_FOLDER"   # show short files
-
+function lsUpdate() {
 	#shellcheck disable=SC2029
 	ssh $REMOTE_HOST "ls -lh $REMOTE_FOLDER > $REMOTE_FOLDER/ls.txt" # add public directory listing
 }
 
-[ $1 = "ls" ] && lsRemote && exit
+function lsRemote() {
+	lsUpdate
 
-if [ $1 = "rm" ]; then
+	#shellcheck disable=SC2029
+	ssh $REMOTE_HOST "ls -lh $REMOTE_FOLDER"   # show short files
+}
+
+[ "$1" = "ls" ] && lsRemote && exit
+
+if [ "$1" = "rm" ]; then
 	#shellcheck disable=SC2029
 	ssh $REMOTE_HOST "rm $REMOTE_FOLDER/$2"
 	lsRemote
@@ -44,4 +48,4 @@ rsync -avz "$sourceFile" "$REMOTE_HOST:$remotePath"
 #shellcheck disable=SC2029
 ssh $REMOTE_HOST "chmod ugo+r $remotePath"   # make sure permissions allow reading
 
-lsRemote
+lsUpdate
